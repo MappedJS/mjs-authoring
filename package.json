@@ -18,5 +18,11 @@
         "authoring",
         "creation"
     ],
-    "license": "BSD-2-Clause"
+    "license": "BSD-2-Clause",
+    "dependencies": {
+        "image-slicer": "https://github.com/MappedJS/image-slicer.git"
+    },
+    "devDependencies": {
+
+    }
 }
