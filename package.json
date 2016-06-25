@@ -1,0 +1,22 @@
+{
+    "name": "authoring",
+    "version": "0.0.1",
+    "description": "Electron Application for building and creating maps based on mjs-plugin",
+    "author": "Michael Duve",
+    "email": "info@mappedjs.de",
+    "homepage": "http://mappedJS.de",
+    "engines": {
+        "node": "6.2.1",
+        "npm": "3.9.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/MappedJS/mjs-authoring.git"
+    },
+    "keywords": [
+        "map",
+        "authoring",
+        "creation"
+    ],
+    "license": "BSD-2-Clause"
+}
