@@ -1,10 +1,15 @@
 {
-    "name": "authoring",
+    "name": "mjs-authoring",
     "version": "0.0.1",
     "description": "Electron Application for building and creating maps based on mjs-plugin",
-    "author": "Michael Duve",
+    "author": {
+        "name" : "Michael Duve",
+        "email" : "mduve@designmail.net",
+        "url" : "https://github.com/dazlious"
+    },
     "email": "info@mappedjs.de",
     "homepage": "http://mappedJS.de",
+    "main": "src/main.js",
     "engines": {
         "node": "6.2.1",
         "npm": "3.9.3"
@@ -19,10 +24,29 @@
         "creation"
     ],
     "license": "BSD-2-Clause",
+    "scripts": {
+        "start": "electron src/main.js",
+        "dev": "electron src/main.js debug",
+        "dist": "npm run dist:osx && npm run dist:linux && npm run dist:win64",
+        "dist:osx": "build --platform darwin",
+        "dist:linux": "build --platform linux",
+        "dist:win64": "build --platform win32 --arch x64"
+    },
     "dependencies": {
-        "image-slicer": "https://github.com/MappedJS/image-slicer.git"
+        "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
+        "mjs-imageslicer": "https://github.com/MappedJS/mjs-imageslicer.git",
+        "minimist": "1.2.0"
     },
     "devDependencies": {
-
+        "electron-builder": "5.10.1",
+        "electron-prebuilt": "1.2.5"
+    },
+    "build": {
+        "appId": "de.mappedJS",
+        "app-category-type": "public.app-category.utilities",
+        "productName": "MappedJS Authoring Tool",
+        "win": {
+            "iconUrl": "https://raw.githubusercontent.com/MappedJS/mjs-material/master/icon.ico"
+        }
     }
 }
