@@ -1,14 +1,8 @@
-const electron = require('electron');
-var argv = require('minimist')(process.argv.slice(2))["_"];
-
 const {
-    app
-} = electron;
+    app, BrowserWindow
+} = require('electron');
 
-const {
-    BrowserWindow
-} = electron;
-
+const argv = require('minimist')(process.argv.slice(2))["_"];
 const settings = {
     debug: argv.indexOf("debug") > -1
 };

@@ -1,52 +1,62 @@
 {
-    "name": "mjs-authoring",
-    "version": "0.0.1",
-    "description": "Electron Application for building and creating maps based on mjs-plugin",
-    "author": {
-        "name" : "Michael Duve",
-        "email" : "mduve@designmail.net",
-        "url" : "https://github.com/dazlious"
-    },
-    "email": "info@mappedjs.de",
-    "homepage": "http://mappedJS.de",
-    "main": "src/main.js",
-    "engines": {
-        "node": "6.2.1",
-        "npm": "3.9.3"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/MappedJS/mjs-authoring.git"
-    },
-    "keywords": [
-        "map",
-        "authoring",
-        "creation"
-    ],
-    "license": "BSD-2-Clause",
-    "scripts": {
-        "start": "electron src/main.js",
-        "dev": "electron src/main.js debug",
-        "dist": "npm run dist:osx && npm run dist:linux && npm run dist:win64",
-        "dist:osx": "build --platform darwin",
-        "dist:linux": "build --platform linux",
-        "dist:win64": "build --platform win32 --arch x64"
-    },
-    "dependencies": {
-        "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
-        "mjs-imageslicer": "https://github.com/MappedJS/mjs-imageslicer.git",
-        "minimist": "1.2.0"
-    },
-    "devDependencies": {
-        "electron-builder": "5.10.1",
-        "electron-prebuilt": "1.2.5"
-    },
-    "build": {
-        "appId": "de.mappedJS",
-        "app-category-type": "public.app-category.utilities",
-        "productName": "MappedJS Authoring Tool",
-        "win": {
-            "iconUrl": "https://raw.githubusercontent.com/MappedJS/mjs-material/master/icon.ico"
-        }
+  "name": "mjs-authoring",
+  "version": "0.0.1",
+  "description": "Electron Application for building and creating maps based on mjs-plugin",
+  "author": {
+    "name": "Michael Duve",
+    "email": "mduve@designmail.net",
+    "url": "https://github.com/dazlious"
+  },
+  "email": "info@mappedjs.de",
+  "homepage": "http://mappedJS.de",
+  "main": "src/main.js",
+  "engines": {
+    "node": "6.2.1",
+    "npm": "3.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/MappedJS/mjs-authoring.git"
+  },
+  "keywords": [
+    "map",
+    "authoring",
+    "creation"
+  ],
+  "license": "BSD-2-Clause",
+  "watch": {
+    "test": "{css}/*.css"
+},
+  "scripts": {
+    "start": "./node_modules/.bin/electron src/main.js",
+    "start:debug": "npm run start -- debug",
+    "dist": "npm run dist:osx && npm run dist:linux && npm run dist:win64",
+    "dist:osx": "build --platform darwin",
+    "dist:linux": "build --platform linux",
+    "dist:win64": "build --platform win32 --arch x64",
+    "css": "sass src/scss/main.scss:src/css/main.css --style compressed",
+    "change": "npm run css && npm run autoprefixer",
+    "watch": "node_modules/.bin/watch 'npm run change' src/scss/",
+    "autoprefixer": "./node_modules/.bin/postcss --use autoprefixer --autoprefixer.browsers 'last 2 Chrome versions' src/css/main.css -d ./src/css/"
+  },
+  "dependencies": {
+    "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
+    "mjs-imageslicer": "https://github.com/MappedJS/mjs-imageslicer.git",
+    "minimist": "1.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "6.3.6",
+    "electron-builder": "5.10.1",
+    "electron-prebuilt": "1.2.5",
+    "npm-watch": "0.1.4",
+    "postcss-cli": "2.5.2"
+  },
+  "build": {
+    "appId": "de.mappedJS",
+    "app-category-type": "public.app-category.utilities",
+    "productName": "MappedJS Authoring Tool",
+    "win": {
+      "iconUrl": "https://raw.githubusercontent.com/MappedJS/mjs-material/master/icon.ico"
     }
+  }
 }
