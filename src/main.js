@@ -11,8 +11,17 @@ let win;
 
 function createWindow() {
     win = new BrowserWindow({
-        width: 1200,
-        height: 600
+        width: 1600,
+        height: 800,
+        backgroundColor: '#1d1e1e',
+        title: "MappedJS Authoring Tool",
+        enableLargerThanScreen: true,
+        darkTheme: true,
+        webPreferences: {
+            webSecurity: false,
+            defaultFontFamily: "sansSerif",
+            defaultEncoding: "UTF-8"
+        }
     });
     win.loadURL(`file://${__dirname}/index.html`);
     if (settings.debug) win.webContents.openDevTools();

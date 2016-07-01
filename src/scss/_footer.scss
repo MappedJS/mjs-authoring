@@ -1,0 +1,59 @@
+& {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: space-between;
+    border-top: map-get($components, footerBorder);
+    margin: 0 4*$gutter;
+    padding: 3*$gutter 0;
+    color: map-get($colors, light);
+}
+& > div {
+    display: flex;
+    align-items: center;
+    &.left {
+        margin-left: 3*$gutter;
+    }
+    &.right {
+        margin-right: 3*$gutter;
+    }
+}
+.item {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    font-size: 1.2rem;
+    &:hover,
+    &.selected {
+        color: map-get($colors, highlight);
+    }
+    &.button {
+        & > span {
+            margin-left: 2*$gutter;
+        }
+    }
+    &.info {
+        cursor: default;
+        color: darken(map-get($colors, light), 20);
+        font: {
+            size: 0.8rem;
+            weight: 300;
+        }
+        &:hover,
+        &.selected {
+            color: inherit;
+        }
+        &.saving {
+            & > span {
+                animation: rotateElement 1s infinite linear;
+            }
+        }
+    }
+    & + .item {
+        margin-left: 3*$gutter;
+    }
+    .icon {
+        font-size: 1.2rem;
+        margin-right: 2*$gutter;
+    }
+}

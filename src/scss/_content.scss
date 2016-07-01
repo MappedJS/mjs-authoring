@@ -1,0 +1,13 @@
+& {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: map-get($components, content);
+}
+.inner-content {
+    display: flex;
+    flex: 1 0 auto;
+}
+.footer {
+    @import "_footer.scss";
+}
