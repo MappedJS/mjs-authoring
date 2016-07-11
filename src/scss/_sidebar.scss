@@ -5,6 +5,5 @@
     padding: 3*$gutter;
     flex: 0 1 auto;
     min-width: 320px;
-    border-right: 1px solid map-get($colors, dark);
     background: map-get($components, sidebar);
 }

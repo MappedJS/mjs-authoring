@@ -35,6 +35,7 @@
     "-W122": false,
     "proto": true,
     "globals": {
+        "angular": true,
         "jQuery": true,
         "Handlebars": true,
         "Modernizr": true,

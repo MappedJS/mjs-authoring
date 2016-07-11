@@ -10,49 +10,57 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/fonts/opensans.min.css">
         <link rel="stylesheet" type="text/css" href="css/fonts/ionicons.min.css">
+        <script src="../node_modules/angular/angular.min.js"></script>
+        <script type="text/javascript" src="js/components.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
     </head>
     <body>
-        <article class="application">
+        <article class="application" ng-app="authoringTool" ng-controller="MainController as ctrl">
 
             <header class="header">
                 <nav class="nav left">
                     <div class="brand">
                         <img src="./assets/brand.svg" alt="brand" />
                     </div>
-                    <div class="item selected">Step 1</div>
+                    <div class="item selected">{{ctrl.getLocale("step")}} 1</div>
                     <div class="spacer"></div>
-                    <div class="item">Step 2</div>
+                    <div class="item">{{ctrl.getLocale("step")}} 2</div>
                     <div class="spacer"></div>
-                    <div class="item">Step 3</div>
+                    <div class="item">{{ctrl.getLocale("step")}} 3</div>
                 </nav>
                 <nav class="nav right">
                     <div class="item ion-ios-settings icon"></div>
                     <div class="item ion-ios-help-outline icon"></div>
+                    <div class="item language">
+                        <mjslanguage></mjslanguage>
+                    </div>
                 </nav>
             </header>
 
             <main class="application-content">
                 <aside class="sidebar">
-
                 </aside>
                 <section class="content">
                     <div class="inner-content">
-
+                        <p class="upload-images">
+                            <span class="icon ion-archive"></span>
+                            <span ng-bind-html='ctrl.getLocale("dragAndDrop")'></span>
+                        </p>
                     </div>
                     <div class="footer">
                         <div class="left">
                             <div class="item info saving">
-                                <span class="ion-load-c icon"></span> Working
+                                <span class="ion-load-c icon"></span> {{ctrl.getLocale("working")}}
                             </div>
                             <div class="item info saved">
-                                <span class="ion-checkmark icon"></span> Ready
+                                <span class="ion-checkmark icon"></span> {{ctrl.getLocale("ready")}}
                             </div>
                             <div class="item info failed">
-                                <span class="ion-close icon"></span> Error
+                                <span class="ion-close icon"></span> {{ctrl.getLocale("error")}}
                             </div>
                         </div>
                         <div class="right">
-                            <div class="item button">Next <span class="ion-chevron-right"></span></div>
+                            <div class="item button">{{ctrl.getLocale("next")}} <span class="ion-chevron-right"></span></div>
                         </div>
                     </div>
                 </section>
@@ -60,6 +68,5 @@
 
         </article>
 
-        <script type="text/javascript" src="js/app.js"></script>
     </body>
 </html>

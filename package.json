@@ -26,8 +26,9 @@
   "license": "BSD-2-Clause",
   "watch": {
     "test": "{css}/*.css"
-},
+  },
   "scripts": {
+    "install": "napa bgrins/filereader.js",
     "start": "./node_modules/.bin/electron src/main.js",
     "start:debug": "npm run start -- debug",
     "dist": "npm run dist:osx && npm run dist:linux && npm run dist:win64",
@@ -42,12 +43,14 @@
   "dependencies": {
     "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
     "mjs-imageslicer": "https://github.com/MappedJS/mjs-imageslicer.git",
-    "minimist": "1.2.0"
+    "minimist": "1.2.0",
+    "angular": "1.5.7"
   },
   "devDependencies": {
     "autoprefixer": "6.3.6",
     "electron-builder": "5.10.1",
     "electron-prebuilt": "1.2.5",
+    "napa": "^2.3.0",
     "npm-watch": "0.1.4",
     "postcss-cli": "2.5.2"
   },

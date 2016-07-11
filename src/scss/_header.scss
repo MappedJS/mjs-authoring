@@ -2,9 +2,6 @@
     display: flex;
     justify-content: space-between;
     background: map-get($components, header);
-    border-top: map-get($components, headerBorder);
-    border-bottom: map-get($components, headerBorder);
-    box-shadow: 0 0 1px 2px rgba(map-get($colors, dark), 0.5);
 }
 .nav {
     display: flex;
@@ -46,5 +43,37 @@
     img {
         max-height: 13*$gutter;
         vertical-align: middle;
+    }
+}
+.language {
+    color: map-get($colors, light);
+    &:hover {
+        color: map-get($colors, highlight);
+    }
+    .selectLanguage {
+        appearance: none;
+        border-radius: $gutter * 3;
+        font-size: .8rem;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        outline: 0;
+        border: 1px solid currentColor;
+        background-color: transparent;
+        padding: 0 25px 0 10px;
+        color: currentColor;
+        &:focus {
+            outline: 0;
+        }
+    }
+    &:after {
+        content: "\f3d0";
+        font-family: "Ionicons";
+        pointer-events: none;
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        line-height: 32px;
+        color: currentColor;
     }
 }

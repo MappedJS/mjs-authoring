@@ -1,0 +1,6 @@
+<select
+    class="selectLanguage"
+    ng-model="languageService.activeLanguage"
+    ng-change="languageService.changeLanguage()"
+    ng-options="lang.short as lang.name for lang in languageService.languages">
+</select>
