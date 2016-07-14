@@ -26,6 +26,9 @@ body {
     flex-direction: column;
     height: 100%;
 }
+.mjslist {
+    @import "_mjslist.scss";
+}
 .header {
     @import "_header.scss";
 }
@@ -39,6 +42,19 @@ body {
     .content {
         @import "_content.scss";
     }
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: map-get($colors, light);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
 }
 
 @import "_keyframes.scss";

@@ -6,4 +6,10 @@
     flex: 0 1 auto;
     min-width: 320px;
     background: map-get($components, sidebar);
+    transition: all .15s ease;
+    &.inactive {
+        min-width: 0;
+        padding: 0;
+        flex: 0 0 0;
+    }
 }

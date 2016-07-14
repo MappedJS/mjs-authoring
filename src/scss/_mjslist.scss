@@ -1,0 +1,112 @@
+& {
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 2*$gutter 3*$gutter;
+    > * {
+        user-select: none;
+    }
+    li {
+        min-height: 150px;
+        max-height: 150px;
+        display: flex;
+        flex: 1 1 auto;
+        background: map-get($colors, lighterdark);
+        margin: ($gutter*2) 0;
+        padding: 3*$gutter 5*$gutter;
+        animation: none;
+        overflow: hidden;
+        transform: translateZ(0);
+        &:hover .mover {
+            color: map-get($colors, highlight);
+        }
+        &.animation {
+            animation: popup .8s 1 ease-out;
+        }
+    }
+    .add-another-file {
+        min-height: 150px;
+        max-height: initial;
+        background: transparent;
+        border: 5px dashed map-get($colors, light);
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        animation: none;
+        transition: border .3s ease;
+        .dad {
+            max-width: 180px;
+        }
+        input {
+            display: none;
+        }
+        .icon {
+            display: block;
+            margin-right: 5*$gutter;
+            font: {
+                size: 5rem;
+                weight: 700;
+            }
+        }
+    }
+    .thumbnail {
+        width: 235px;
+        height: 132px;
+        background-color: map-get($colors, darkest);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .mjslistitem {
+        flex-direction: row;
+        display: flex;
+        flex: 1 0 auto;
+        color: map-get($colors, light);
+        .deleteImage {
+            cursor: pointer;
+            justify-content: center;
+            display: flex;
+            flex: 1 1 auto;
+            max-width: 1.5rem;
+            font-size: 1.5rem;
+            margin-right: 10px;
+            align-items: center;
+            &:hover {
+                color: map-get($colors, highlight);
+            }
+        }
+        .description {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            padding-left: 4*$gutter;
+            justify-content: center;
+            font-size: 1.1rem;
+            p {
+                margin: 0;
+            }
+        }
+        .mover {
+            flex: 0 1 auto;
+            display: flex;
+            min-width: 60px;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+    }
+}
+.as-sortable-dragging {
+    overflow: hidden;
+}

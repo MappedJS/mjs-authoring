@@ -3,9 +3,15 @@ angular.module('components', [])
         return {
             restrict: 'E',
             transclude: true,
-            scope: {},
-            controller: 'MainController',
             templateUrl: './components/language.html',
+            replace: true
+        };
+    })
+    .directive('mjslistitem', function() {
+        return {
+            restrict: 'E',
+            transclude: true,
+            templateUrl: './components/listitem.html',
             replace: true
         };
     });

@@ -41,18 +41,19 @@
     "autoprefixer": "./node_modules/.bin/postcss --use autoprefixer --autoprefixer.browsers 'last 2 Chrome versions' src/css/main.css -d ./src/css/"
   },
   "dependencies": {
-    "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
-    "mjs-imageslicer": "https://github.com/MappedJS/mjs-imageslicer.git",
+    "angular": "1.5.7",
     "minimist": "1.2.0",
-    "angular": "1.5.7"
+    "mjs-imageslicer": "https://github.com/MappedJS/mjs-imageslicer.git",
+    "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
+    "python-shell": "^0.4.0"
   },
   "devDependencies": {
     "autoprefixer": "6.3.6",
     "electron-builder": "5.10.1",
     "electron-prebuilt": "1.2.5",
-    "napa": "^2.3.0",
-    "npm-watch": "0.1.4",
-    "postcss-cli": "2.5.2"
+    "napa": "2.3.0",
+    "postcss-cli": "2.5.2",
+    "watch": "0.19.1"
   },
   "build": {
     "appId": "de.mappedJS",

@@ -1,9 +1,22 @@
 {
     "step": "Step",
     "settings": "Settings",
-    "dragAndDrop": "Drag and drop <br/> your images here",
+    "dragAndDrop": "Click or drop images here",
     "next": "Next",
     "working": "Working",
     "ready": "Ready",
-    "error": "Error"
+    "error": "Error",
+    "options": "Map Options",
+    "boundaries": "Boundaries",
+    "northwest": "Northwest",
+    "southeast": "Southeast",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "thumb-size": "Thumbnail Size",
+    "tile-size": "Tile Size",
+    "min-tile-size": "Minimum Tile Size",
+    "file-format": "File Format",
+    "advanced": "Advanced",
+    "minimum-zoom": "Minimum Zoomlevel",
+    "maximum-zoom": "Maximum Zoomlevel"
 }

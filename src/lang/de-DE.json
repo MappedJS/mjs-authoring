@@ -1,9 +1,22 @@
 {
     "step": "Schritt",
     "settings": "Einstellungen",
-    "dragAndDrop": "Ziehe deine Bilder <br/> auf diese Fläche",
+    "dragAndDrop": "Klicken oder Bilder hier ablegen",
     "next": "Weiter",
     "working": "Verarbeite",
     "ready": "Bereit",
-    "error": "Fehler"
+    "error": "Fehler",
+    "options": "Karten Einstellungen",
+    "boundaries": "Äußere Grenzen",
+    "northwest": "Nordwesten",
+    "southeast": "Südosten",
+    "latitude": "Breitengrad",
+    "longitude": "Längengrad",
+    "thumb-size": "Größe des Vorschaubildes",
+    "tile-size": "Größe einer Kachel",
+    "min-tile-size": "Mindestgröße einer Kachel",
+    "file-format": "Dateiformat",
+    "advanced": "Erweitert",
+    "minimum-zoom": "Mindestzoomstufe",
+    "maximum-zoom": "Maximalzoomstufe"
 }

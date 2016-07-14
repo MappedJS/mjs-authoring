@@ -3,9 +3,15 @@
     flex: 0 1 auto;
     align-items: center;
     justify-content: space-between;
-    margin: 0 4*$gutter;
-    padding: 3*$gutter 0;
+    padding: 3*$gutter 4*$gutter;
     color: map-get($colors, light);
+    overflow: hidden;
+    transition: all .15s ease;
+    background: map-get($components, footer);
+    &.inactive {
+        padding: 0;
+        flex: 0 0 0;
+    }
 }
 & > div {
     display: flex;
@@ -40,7 +46,7 @@
         }
         &:hover,
         &.selected {
-            color: inherit;
+            color: darken(map-get($colors, light), 20);
         }
         &.saving {
             & > span {

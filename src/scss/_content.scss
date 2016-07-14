@@ -5,20 +5,17 @@
     background: map-get($components, content);
 }
 .inner-content {
+    position: relative;
     display: flex;
     flex: 1 0 auto;
     justify-content:center;
     align-items:center;
-}
-.upload-images {
-    text-align: center;
-    font-size: 1.5rem;
-    text-shadow: 1px 1px rgba(0,0,0,.5);
-    .icon {
-        display: block;
-        font: {
-            size: 8rem;
-            weight: 700;
+    color: map-get($colors, light);
+    transition: color .3s ease;
+    &.drag {
+        color: map-get($colors, highlight);
+        .add-another-file {
+            border-color: map-get($colors, highlight);
         }
     }
 }

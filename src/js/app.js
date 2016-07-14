@@ -1,12 +1,155 @@
+const PythonShell = require('python-shell');
+const OS = require('os');
+const fs = require('fs');
+const {shell} = require('electron');
+
+/*global FileReaderJS,ImageFile*/
 angular.module('authoringTool', ['components'])
-    .controller('MainController', function($scope, $sce, languageService) {
-        var ctrl = this;
+    .controller('MainController', function($scope, $sce, languageService, dataService) {
+
         $scope.languageService = languageService;
+        $scope.dataService = dataService;
+
+        $scope.mapOpts = {
+            bounds: {
+                northWest: [52.777, 12.916],
+                southEast: [52.266, 13.938]
+            },
+            thumbnailSize: 10,
+            tileSize: 512,
+            minTileSize: 128,
+            zoom: [0.8, 1.2],
+            extension: "png"
+        };
+
+        $scope.tileSizes = [128, 256, 512, 1024];
+        $scope.minTileSizes = [32, 64, 128, 256, 512];
+        $scope.extensions = ["jpg", "png"];
+
+        $scope.next = function() {
+            var tmpDir = OS.tmpdir() + "/MappedJS/";
+            const allPaths = $scope.dataService.getPaths();
+            var pyOptions = {
+                args: [
+                    ...['-i'],
+                    ...$scope.dataService.getPaths(),
+                    ...['-o', tmpDir],
+                    ...['-p', 'img/'],
+                    ...['-c', 'True'],
+                    ...['-t', $scope.mapOpts.thumbnailSize],
+                    ...['-s', $scope.mapOpts.tileSize],
+                    ...['-m', $scope.mapOpts.minTileSize],
+                    ...['-e', $scope.mapOpts.extension],
+                    ...['-z', $scope.mapOpts.zoom]
+                ]
+            };
+            PythonShell.run('./node_modules/mjs-imageslicer/imageslicer.py', pyOptions, function (err, res) {
+                shell.showItemInFolder(tmpDir);
+            });
+        };
+
+        $scope.hasFiles = function() {
+            return $scope.dataService.hasFiles;
+        };
 
         this.getLocale = function(word) {
             return $sce.trustAsHtml($scope.languageService.getWord(word));
         };
 
+    })
+    .controller('MapCreationController', function($scope, $timeout, dataService) {
+
+        var fROpts = {
+            dragClass: "drag",
+            readAsDefault: "DataURL",
+            accept: "image/(png|jpeg)",
+            on: {
+                beforestart: function(file) {
+                    var imageFile = new ImageFile({
+                        filesize: file.extra.prettySize,
+                        path: file.path,
+                        name: file.name
+                    });
+                    _this.addFile(imageFile);
+                },
+                load: function(e, file) {
+                    for (var i in dataService.files) {
+                        var currentFile = dataService.files[i];
+                        if (currentFile.path === file.path) {
+                            currentFile.addImageData(e.target.result);
+                        }
+                    }
+                },
+                error: function(e, file) {
+                    // TODO: Catch
+                },
+                abort: function(e, file) {
+                    // TODO: Catch
+                },
+                skip: function(e, file) {
+                    // TODO: Catch
+                },
+                groupend: function(group) {
+                    $timeout(function() {
+                        for (var i in dataService.files) {
+                            var current = dataService.files[i];
+                            if (!current.isLoaded && !current.isLoading) {
+                                current.load(function() {
+                                    dataService.files.sort((file1, file2) => {
+                                        return file1.width - file2.width;
+                                    });
+                                    $scope.$apply();
+                                });
+                            }
+                        }
+                    }, 800);
+                }
+            }
+        };
+
+        var _this = this;
+        $scope.dataService = dataService;
+
+        $scope.files = dataService.files;
+
+        $scope.delete = function(i) {
+            dataService.files.splice(i, 1);
+        };
+
+        this.init = function(elem) {
+            $scope.upload = document.getElementById(elem);
+            $scope.uploadInput = document.getElementById("input-"+elem);
+            FileReaderJS.setupDrop($scope.upload, fROpts);
+            FileReaderJS.setupInput($scope.uploadInput, fROpts);
+            FileReaderJS.setSync(true);
+        };
+
+        this.uploadClickHandler = function() {
+            $timeout(function() {
+                document.querySelector('#input-upload').click();
+            },0);
+        };
+
+        this.addFile = function(file) {
+            dataService.files.push(file);
+            if ($scope.files.length > 0) {
+                $scope.dataService.hasFiles = true;
+            }
+            $scope.$apply();
+        };
+
+    })
+    .service("dataService", function() {
+        this.hasFiles = false;
+        this.files = [];
+
+        this.getPaths = function() {
+            var files = [];
+            for (var i in this.files) {
+                files.push(this.files[i].path);
+            }
+            return files;
+        };
     })
     .service("languageService", function($http) {
         this.changeLanguage = function() {
@@ -27,7 +170,7 @@ angular.module('authoringTool', ['components'])
             }
             var _this = this;
             $http.get(this.getUrl())
-                .success(function(data){
+                .success(function(data) {
                     _this.languages[_this.activeLanguage].data = data;
                     _this.locale = _this.languages[_this.activeLanguage].data;
                 })

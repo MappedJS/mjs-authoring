@@ -1,8 +1,7 @@
 $gutter: 3px;
 
 $colors: (
-    "highlight": #ea1c4c,
-    "base": #14aa79,
+    "highlight": #14aa79,
     "dark": #404342,
     "lighterdark": #2d2d2d,
     "light": #e5e6e6,
@@ -13,5 +12,6 @@ $colors: (
 $components: (
     "header": linear-gradient(map-get($colors, dark), map-get($colors, lighterdark)),
     "sidebar": map-get($colors, light),
-    "content": map-get($colors, dark)
+    "content": map-get($colors, dark),
+    "footer": linear-gradient(map-get($colors, lighterdark), map-get($colors, dark))
 );
