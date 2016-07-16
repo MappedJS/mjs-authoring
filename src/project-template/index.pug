@@ -1,0 +1,44 @@
+doctype html
+html(lang="de")
+  head
+    title=project
+    link(rel="stylesheet", type="text/css", href="styles/mappedjs.min.css")
+    meta(name="viewport", content="width=device-width, user-scalable=yes")
+    style.
+        body {
+            margin: 0;
+            font-family: Verdana, sans-serif;
+        }
+        body * {
+            box-sizing: border-box;
+        }
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+        .mjs {
+            width: 100%;
+            height: 100%;
+        }
+  body
+    .mjs(data-test=options.center)
+    script(type='text/javascript', src='js/mappedjs.min.js')
+    script(type='text/javascript').
+        var mappedJS = new de.MappedJS({
+            container: ".mjs",
+            mapData: "mapData.json",
+            mapSettings: {
+                "center": {
+                    "lat": #{options.center.lat},
+                    "lng": #{options.center.lng}
+                },
+                "bounds": {
+                    "northWest": [#{options.bounds.northWest}],
+                    "southEast": [#{options.bounds.southEast}]
+                },
+                "centerSmallMap": false,
+                "level": 0,
+                "zoom": 1
+            }
+        });

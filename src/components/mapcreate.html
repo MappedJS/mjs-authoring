@@ -1,0 +1,85 @@
+<form class="map-content form-content">
+    <h2>{{ctrl.getLocale("options")}}</h2>
+    <fieldset>
+        <legend>
+            {{ctrl.getLocale("boundaries")}}
+        </legend>
+        <div>
+            <h2>{{ctrl.getLocale("northwest")}}</h2>
+            <div>
+                <label>{{ctrl.getLocale("latitude")}}</label>
+                <input type="number" ng-model="mapOpts.bounds.northWest[0]" />
+            </div>
+            <div>
+                <label>{{ctrl.getLocale("longitude")}}</label>
+                <input type="number" ng-model="mapOpts.bounds.northWest[1]" />
+            </div>
+        </div>
+        <div>
+            <h2>{{ctrl.getLocale("southeast")}}</h2>
+            <div>
+                <label>{{ctrl.getLocale("latitude")}}</label>
+                <input type="number" ng-model="mapOpts.bounds.southEast[0]" />
+            </div>
+            <div>
+                <label>{{ctrl.getLocale("longitude")}}</label>
+                <input type="number" ng-model="mapOpts.bounds.southEast[1]" />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>
+            {{ctrl.getLocale("advanced")}}
+        </legend>
+        <div>
+            <div class="slider">
+                <label>{{ctrl.getLocale("thumb-size")}}</label>
+                <div>
+                    <input type="range" ng-model="mapOpts.thumbnailSize" min="5" max="20"/>
+                    <span>{{mapOpts.thumbnailSize}}%</span>
+                </div>
+            </div>
+            <div>
+                <label>{{ctrl.getLocale("tile-size")}}</label>
+                <div class="custom-select">
+                    <select class="selectTileSize"
+                        ng-model="mapOpts.tileSize"
+                        ng-options="size as size for size in tileSizes"
+                    ></select>
+                </div>
+            </div>
+            <div>
+                <label>{{ctrl.getLocale("min-tile-size")}}</label>
+                <div class="custom-select">
+                    <select class="selectMinTileSize"
+                        ng-model="mapOpts.minTileSize"
+                        ng-options="minsize as minsize for minsize in minTileSizes"
+                    ></select>
+                </div>
+            </div>
+            <div>
+                <label>{{ctrl.getLocale("file-format")}}</label>
+                <div class="custom-select">
+                    <select class="extension"
+                        ng-model="mapOpts.extension"
+                        ng-options="extension as extension for extension in extensions"
+                    ></select>
+                </div>
+            </div>
+            <div class="slider">
+                <label>{{ctrl.getLocale("minimum-zoom")}}</label>
+                <div>
+                    <input type="range" ng-model="mapOpts.zoom[0]" min="0.1" max="1" step="0.1" />
+                    <span>{{mapOpts.zoom[0]}}</span>
+                </div>
+            </div>
+            <div class="slider">
+                <label>{{ctrl.getLocale("maximum-zoom")}}</label>
+                <div>
+                    <input type="range" ng-model="mapOpts.zoom[1]" min="1" max="2" step="0.1" />
+                    <span>{{mapOpts.zoom[1]}}</span>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>

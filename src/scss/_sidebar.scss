@@ -4,12 +4,17 @@
     justify-content: space-between;
     padding: 3*$gutter;
     flex: 0 1 auto;
-    min-width: 320px;
+    width: 320px;
     background: map-get($components, sidebar);
     transition: all .15s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
     &.inactive {
         min-width: 0;
         padding: 0;
         flex: 0 0 0;
+    }
+    .form-content {
+        @import "_forms.scss";
     }
 }

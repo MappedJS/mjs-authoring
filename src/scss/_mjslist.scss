@@ -44,7 +44,12 @@
         cursor: pointer;
         font-size: 1.2rem;
         animation: none;
-        transition: border .3s ease;
+        transition: all .3s ease;
+        transition-property: border, color;
+        &:hover {
+            color: map-get($colors, highlight);
+            border-color: map-get($colors, highlight);
+        }
         .dad {
             max-width: 180px;
         }
@@ -61,12 +66,25 @@
         }
     }
     .thumbnail {
+        position: relative;
         width: 235px;
         height: 132px;
         background-color: map-get($colors, darkest);
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            opacity: 0;
+            max-width: 100%;
+            max-height: 100%;
+            transition: opacity .3s ease .8s;
+            &.show {
+                opacity: 1;
+            }
+        }
     }
     .mjslistitem {
         flex-direction: row;

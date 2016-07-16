@@ -24,106 +24,14 @@
     <body>
         <article class="application" ng-app="authoringTool" ng-controller="MainController as ctrl">
 
-            <header class="header">
-                <nav class="nav left">
-                    <div class="brand">
-                        <img src="./assets/brand.svg" alt="brand" />
-                    </div>
-                    <div class="item selected">{{ctrl.getLocale("step")}} 1</div>
-                    <div class="spacer"></div>
-                    <div class="item">{{ctrl.getLocale("step")}} 2</div>
-                    <div class="spacer"></div>
-                    <div class="item">{{ctrl.getLocale("step")}} 3</div>
-                </nav>
-                <nav class="nav right">
-                    <div class="item ion-ios-settings icon"></div>
-                    <div class="item ion-ios-help-outline icon"></div>
-                    <div class="item language">
-                        <mjslanguage></mjslanguage>
-                    </div>
-                </nav>
-            </header>
+            <header class="header" ng-include src="'components/header.html'"></header>
 
             <main class="application-content">
                 <aside class="sidebar" ng-class="{ 'inactive': !hasFiles() }">
-                    <form>
-                        <h2>{{ctrl.getLocale("options")}}</h2>
-                        <fieldset>
-                            <legend>
-                                {{ctrl.getLocale("boundaries")}}
-                            </legend>
-                            <div>
-                                {{ctrl.getLocale("northwest")}}
-                                <div>
-                                    <label>{{ctrl.getLocale("latitude")}}</label>
-                                    <input type="number" ng-model="mapOpts.bounds.northWest[0]" />
-                                </div>
-                                <div>
-                                    <label>{{ctrl.getLocale("longitude")}}</label>
-                                    <input type="number" ng-model="mapOpts.bounds.northWest[1]" />
-                                </div>
-                            </div>
-                            <div>
-                                {{ctrl.getLocale("southeast")}}
-                                <div>
-                                    <label>{{ctrl.getLocale("latitude")}}</label>
-                                    <input type="number" ng-model="mapOpts.bounds.southEast[0]" />
-                                </div>
-                                <div>
-                                    <label>{{ctrl.getLocale("longitude")}}</label>
-                                    <input type="number" ng-model="mapOpts.bounds.southEast[1]" />
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend>
-                                {{ctrl.getLocale("advanced")}}
-                            </legend>
-                            <div>
-                                <div>
-                                    <label>{{ctrl.getLocale("thumb-size")}}</label>
-                                    <input type="range" ng-model="mapOpts.thumbnailSize" min="5" max="20"/>
-                                    <span>{{mapOpts.thumbnailSize}}%</span>
-                                </div>
-                                <div>
-                                    <label>{{ctrl.getLocale("tile-size")}}</label>
-                                    <select class="selectTileSize"
-                                        ng-model="mapOpts.tileSize"
-                                        ng-options="size as size for size in tileSizes"
-                                    ></select>
-                                </div>
-                                <div>
-                                    <label>{{ctrl.getLocale("min-tile-size")}}</label>
-                                    <select class="selectMinTileSize"
-                                        ng-model="mapOpts.minTileSize"
-                                        ng-options="minsize as minsize for minsize in minTileSizes"
-                                    ></select>
-                                </div>
-                                <div>
-                                    <label>{{ctrl.getLocale("file-format")}}</label>
-                                    <select class="extension"
-                                        ng-model="mapOpts.extension"
-                                        ng-options="extension as extension for extension in extensions"
-                                    ></select>
-                                </div>
-                                <div>
-                                    <div>
-                                        <label>{{ctrl.getLocale("minimum-zoom")}}</label>
-                                        <input type="range" ng-model="mapOpts.zoom[0]" min="0.1" max="1" step="0.1" />
-                                        <span>{{mapOpts.zoom[0]}}</span>
-                                    </div>
-                                    <div>
-                                        <label>{{ctrl.getLocale("maximum-zoom")}}</label>
-                                        <input type="range" ng-model="mapOpts.zoom[1]" min="1" max="2" step="0.1" />
-                                        <span>{{mapOpts.zoom[1]}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
+                    <div ng-include src="'components/mapcreate.html'"></div>
                 </aside>
                 <section class="content" ng-controller="MapCreationController as mccrtl">
-                    <div id="upload" class="inner-content upload" ng-init="mccrtl.init('upload')">
+                    <div id="upload" ng-class="{'in': !previewIsReady, 'out': previewIsReady}" class="inner-content upload" ng-init="mccrtl.init('upload')">
                         <ul id="map-list" class="mjslist upload-images" ng-model="files">
                             <li class="add-another-file" ng-click="mccrtl.uploadClickHandler()">
                                 <span class="icon ion-android-add"></span>
@@ -135,23 +43,23 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="footer" ng-class="{ 'inactive': !hasFiles() }">
-                        <div class="left">
-                            <div class="item info saving">
-                                <span class="ion-load-c icon"></span> {{ctrl.getLocale("working")}}
-                            </div>
-                            <div class="item info saved">
-                                <span class="ion-checkmark icon"></span> {{ctrl.getLocale("ready")}}
-                            </div>
-                            <div class="item info failed">
-                                <span class="ion-close icon"></span> {{ctrl.getLocale("error")}}
-                            </div>
-                        </div>
-                        <div class="right">
-                            <div ng-click="next()" class="item button">{{ctrl.getLocale("next")}} <span class="ion-chevron-right"></span></div>
-                        </div>
-                    </div>
+                    <webview
+                        class="inner-content preview"
+                        ng-class="{'in': previewIsReady, 'out': !previewIsReady}"
+                        src="http://127.0.0.1:8888/index.html"
+                    ></webview>
+
+                    <div ng-include src="'components/footer.html'" class="footer" ng-class="{ 'inactive': !hasFiles() }"></div>
                 </section>
+
+                <div class="loader" ng-class="{'loading': processing}">
+                    <div class="inner-loader">
+                        <div class="ion-load-c spinner"></div>
+                        <p>
+                            {{ctrl.getLocale("processing")}}
+                        </p>
+                    </div>
+                </div>
             </main>
 
         </article>

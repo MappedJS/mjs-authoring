@@ -1,0 +1,21 @@
+<nav class="nav left">
+    <div class="brand">
+        <img src="./assets/brand.svg" alt="brand" />
+    </div>
+    <div class="item" ng-class="{'selected': step == 1}">
+        {{ctrl.getLocale("step")}} 1
+        <span>{{ctrl.getLocale("build")}}</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="item" ng-class="{'selected': step == 2}">
+        {{ctrl.getLocale("step")}} 2
+        <span>{{ctrl.getLocale("preview")}}</span>
+    </div>
+</nav>
+<nav class="nav right">
+    <div class="item ion-ios-settings icon"></div>
+    <div class="item ion-ios-help-outline icon"></div>
+    <div class="item language">
+        <mjslanguage></mjslanguage>
+    </div>
+</nav>

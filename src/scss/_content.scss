@@ -12,6 +12,16 @@
     align-items:center;
     color: map-get($colors, light);
     transition: color .3s ease;
+    &.out {
+        display: none;
+    }
+    &.in {
+        display: flex;
+    }
+    &.preview {
+        flex-direction: column;
+        align-items: stretch;
+    }
     &.drag {
         color: map-get($colors, highlight);
         .add-another-file {

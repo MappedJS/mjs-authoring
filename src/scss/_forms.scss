@@ -1,0 +1,141 @@
+& {
+    fieldset {
+        border: 1px solid map-get($colors, lighterdark);
+        padding: 2*$gutter $gutter*5;
+        margin: $gutter*8 0;
+        & > div {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2*$gutter;
+            padding-bottom: 2*$gutter;
+            &:first-of-type {
+                margin-top: 0;
+            }
+            &:last-of-type {
+                padding-bottom: 0;
+            }
+            & > div {
+                display: flex;
+                flex-direction: row;
+                margin: 5px 0;
+                &.slider {
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+    .slider {
+        & > div {
+            flex-direction: row;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        span {
+            margin-left: 6*$gutter;
+        }
+        input {
+            max-width: 180px;
+        }
+    }
+    legend {
+        padding: 0 $gutter*3;
+        font-weight: 700;
+    }
+    label {
+        align-content: flex-start;
+        display: flex;
+        flex: 1 1 auto;
+    }
+    h2 {
+        margin: 2*$gutter 0 3*$gutter;
+        padding: 0;
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 400;
+    }
+    input[type=number] {
+        align-content: flex-end;
+        display: flex;
+        max-width: 80px;
+        flex: 1 1 auto;
+        padding: 2*$gutter 4*$gutter;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        border-bottom: 1px solid map-get($colors, dark);
+        text-align: center;
+        font-size: 0.75rem;
+        &:focus,
+        &:hover {
+            outline: 0;
+            border-bottom-color: map-get($colors, highlight);
+        }
+    }
+    .custom-select {
+        position: relative;
+        display: flex;
+        flex: 0 1 auto;
+        width: 80px;
+        color: map-get($colors, dark);
+        &:hover {
+            color: map-get($colors, highlight);
+        }
+        &:after {
+            content: "\f3d0";
+            font-family: "Ionicons";
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            right: 3*$gutter;
+            line-height: 32px;
+            color: currentColor;
+        }
+        select {
+            appearance: none;
+            border-radius: $gutter * 3;
+            font-size: 0.8rem;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            outline: 0;
+            border: 1px solid currentColor;
+            background-color: transparent;
+            padding: 0 25px 0 10px;
+            color: currentColor;
+            cursor: pointer;
+            &:focus {
+                outline: 0;
+            }
+        }
+    }
+    input[type=range] {
+        appearance: none;
+        margin: 0;
+        width: 100%;
+        background-color: transparent;
+    }
+    input[type=range]:focus {
+        outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: $gutter;
+        cursor: pointer;
+        box-shadow: 0;
+        background: map-get($colors, dark);
+        border-radius: 0;
+        border: 0;
+    }
+    input[type=range]::-webkit-slider-thumb {
+        box-shadow: 0;
+        border: 0;
+        height: 5*$gutter;
+        width: 5*$gutter;
+        border-radius: 100%;
+        background: map-get($colors, highlight);
+        cursor: pointer;
+        appearance: none;
+        margin-top: -(2*$gutter);
+    }
+}

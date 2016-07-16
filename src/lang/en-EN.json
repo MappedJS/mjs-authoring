@@ -18,5 +18,8 @@
     "file-format": "File Format",
     "advanced": "Advanced",
     "minimum-zoom": "Minimum Zoomlevel",
-    "maximum-zoom": "Maximum Zoomlevel"
+    "maximum-zoom": "Maximum Zoomlevel",
+    "build": "Create Map",
+    "preview": "Preview",
+    "processing": "Processing ..."
 }

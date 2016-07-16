@@ -18,5 +18,8 @@
     "file-format": "Dateiformat",
     "advanced": "Erweitert",
     "minimum-zoom": "Mindestzoomstufe",
-    "maximum-zoom": "Maximalzoomstufe"
+    "maximum-zoom": "Maximalzoomstufe",
+    "build": "Erstelle Karte",
+    "preview": "Vorschau",
+    "processing": "Verarbeite ..."
 }

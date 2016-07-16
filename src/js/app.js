@@ -1,15 +1,23 @@
 const PythonShell = require('python-shell');
 const OS = require('os');
-const fs = require('fs');
+const fs = require('fs-extra');
 const {shell} = require('electron');
+const pug = require('pug');
+const connect = require('connect');
+const serveStatic = require('serve-static');
 
 /*global FileReaderJS,ImageFile*/
 angular.module('authoringTool', ['components'])
-    .controller('MainController', function($scope, $sce, languageService, dataService) {
+    .controller('MainController', function($scope, $sce, $timeout, languageService, dataService) {
 
         $scope.languageService = languageService;
         $scope.dataService = dataService;
+        $scope.step = 1;
+        $scope.processing = false;
 
+        $scope.previewIsReady = false;
+
+        // TODO: remove test values
         $scope.mapOpts = {
             bounds: {
                 northWest: [52.777, 12.916],
@@ -19,14 +27,15 @@ angular.module('authoringTool', ['components'])
             tileSize: 512,
             minTileSize: 128,
             zoom: [0.8, 1.2],
-            extension: "png"
+            extension: "jpg"
         };
 
         $scope.tileSizes = [128, 256, 512, 1024];
         $scope.minTileSizes = [32, 64, 128, 256, 512];
         $scope.extensions = ["jpg", "png"];
 
-        $scope.next = function() {
+        $scope.next = () => {
+            $scope.processing = true;
             var tmpDir = OS.tmpdir() + "/MappedJS/";
             const allPaths = $scope.dataService.getPaths();
             var pyOptions = {
@@ -34,18 +43,51 @@ angular.module('authoringTool', ['components'])
                     ...['-i'],
                     ...$scope.dataService.getPaths(),
                     ...['-o', tmpDir],
-                    ...['-p', 'img/'],
+                    ...['-p', 'tiles/'],
                     ...['-c', 'True'],
                     ...['-t', $scope.mapOpts.thumbnailSize],
                     ...['-s', $scope.mapOpts.tileSize],
                     ...['-m', $scope.mapOpts.minTileSize],
                     ...['-e', $scope.mapOpts.extension],
-                    ...['-z', $scope.mapOpts.zoom]
+                    ...['-z', $scope.mapOpts.zoom[0], $scope.mapOpts.zoom[1]]
                 ]
             };
-            PythonShell.run('./node_modules/mjs-imageslicer/imageslicer.py', pyOptions, function (err, res) {
+            PythonShell.run('./node_modules/mjs-imageslicer/imageslicer.py', pyOptions, (err, res) => {
+                if (err) {
+                    console.error(err);
+                }
+                var html = pug.renderFile('src/project-template/index.pug', {
+                    pretty: true,
+                    options: {
+                        bounds: $scope.mapOpts.bounds,
+                        center: this.getCenterOfBounds()
+                    }
+                });
+                fs.writeFileSync(tmpDir + "index.html", html);
+                fs.copySync("./node_modules/mjs-plugin/img", tmpDir + "img/");
+                fs.copySync("./node_modules/mjs-plugin/dist/js/mappedJS.min.js", tmpDir + "js/mappedjs.min.js");
+                fs.copySync("./node_modules/mjs-plugin/dist/styles/mappedJS.min.css", tmpDir + "styles/mappedjs.min.css");
                 shell.showItemInFolder(tmpDir);
+
+                connect().use(serveStatic(tmpDir)).listen(8888, () => {
+                    $scope.processing = false;
+                    $scope.previewIsReady = true;
+                    $scope.step = 2;
+                    $timeout(function(){
+                        $scope.$apply();
+                    }, 0);
+                });
+
             });
+        };
+
+        this.getCenterOfBounds = function() {
+            const lat = ($scope.mapOpts.bounds.northWest[0]+$scope.mapOpts.bounds.southEast[0]) / 2;
+            const lng = ($scope.mapOpts.bounds.northWest[1]+$scope.mapOpts.bounds.southEast[1]) / 2;
+            return {
+                "lat": lat,
+                "lng": lng
+            };
         };
 
         $scope.hasFiles = function() {
@@ -114,6 +156,10 @@ angular.module('authoringTool', ['components'])
 
         $scope.delete = function(i) {
             dataService.files.splice(i, 1);
+            $scope.dataService.hasFiles = $scope.files.length > 0;
+            $timeout(function() {
+                $scope.$apply();
+            }, 0);
         };
 
         this.init = function(elem) {
@@ -132,10 +178,10 @@ angular.module('authoringTool', ['components'])
 
         this.addFile = function(file) {
             dataService.files.push(file);
-            if ($scope.files.length > 0) {
-                $scope.dataService.hasFiles = true;
-            }
-            $scope.$apply();
+            $scope.dataService.hasFiles = $scope.files.length > 0;
+            $timeout(function() {
+                $scope.$apply();
+            }, 0);
         };
 
     })
