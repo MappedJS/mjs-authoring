@@ -28,7 +28,7 @@
     "test": "{css}/*.css"
   },
   "scripts": {
-    "install": "napa bgrins/filereader.js",
+    "install": "sudo pip install --upgrade pip && sudo pip install Pillow && napa bgrins/filereader.js",
     "start": "./node_modules/.bin/electron src/main.js",
     "start:debug": "npm run start -- debug",
     "dist": "npm run dist:osx && npm run dist:linux && npm run dist:win64",
@@ -62,7 +62,7 @@
   "build": {
     "appId": "de.mappedJS",
     "app-category-type": "public.app-category.utilities",
-    "productName": "MappedJS Authoring Tool",
+    "productName": "MappedJS_Authoring_Tool",
     "win": {
       "iconUrl": "https://raw.githubusercontent.com/MappedJS/mjs-material/master/icon.ico"
     }

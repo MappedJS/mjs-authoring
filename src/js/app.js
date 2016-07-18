@@ -37,6 +37,7 @@ angular.module('authoringTool', ['components'])
         $scope.next = () => {
             $scope.processing = true;
             var tmpDir = OS.tmpdir() + "/MappedJS/";
+            fs.ensureDirSync(tmpDir);
             const allPaths = $scope.dataService.getPaths();
             var pyOptions = {
                 args: [
@@ -50,13 +51,17 @@ angular.module('authoringTool', ['components'])
                     ...['-m', $scope.mapOpts.minTileSize],
                     ...['-e', $scope.mapOpts.extension],
                     ...['-z', $scope.mapOpts.zoom[0], $scope.mapOpts.zoom[1]]
-                ]
+                ],
+                scriptPath: tmpDir
             };
-            PythonShell.run('./node_modules/mjs-imageslicer/imageslicer.py', pyOptions, (err, res) => {
+
+            fs.copySync(__dirname + '/../node_modules/mjs-imageslicer/imageslicer.py', pyOptions.scriptPath + "imageslicer.py");
+
+            PythonShell.run('imageslicer.py', pyOptions, (err, res) => {
                 if (err) {
                     console.error(err);
                 }
-                var html = pug.renderFile('src/project-template/index.pug', {
+                var html = pug.renderFile(__dirname + '/project-template/index.pug', {
                     pretty: true,
                     options: {
                         bounds: $scope.mapOpts.bounds,
@@ -64,9 +69,9 @@ angular.module('authoringTool', ['components'])
                     }
                 });
                 fs.writeFileSync(tmpDir + "index.html", html);
-                fs.copySync("./node_modules/mjs-plugin/img", tmpDir + "img/");
-                fs.copySync("./node_modules/mjs-plugin/dist/js/mappedJS.min.js", tmpDir + "js/mappedjs.min.js");
-                fs.copySync("./node_modules/mjs-plugin/dist/styles/mappedJS.min.css", tmpDir + "styles/mappedjs.min.css");
+                fs.copySync(__dirname + "/../node_modules/mjs-plugin/img", tmpDir + "img/");
+                fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/js/mappedJS.min.js", tmpDir + "js/mappedjs.min.js");
+                fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/styles/mappedJS.min.css", tmpDir + "styles/mappedjs.min.css");
                 shell.showItemInFolder(tmpDir);
 
                 connect().use(serveStatic(tmpDir)).listen(8888, () => {
