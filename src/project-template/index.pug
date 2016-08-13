@@ -28,6 +28,7 @@ html(lang="de")
         var mappedJS = new de.MappedJS({
             container: ".mjs",
             mapData: "mapData.json",
+            markerData: !{JSON.stringify(options.markerData)},
             mapSettings: {
                 "center": {
                     "lat": #{options.center.lat},
@@ -37,7 +38,10 @@ html(lang="de")
                     "northWest": [#{options.bounds.northWest}],
                     "southEast": [#{options.bounds.southEast}]
                 },
-                "centerSmallMap": false,
+                "aoiBounds": {
+                    "northWest": [#{options.aoiBounds.northWest}],
+                    "southEast": [#{options.aoiBounds.southEast}]
+                },
                 "level": 0,
                 "zoom": 1
             }

@@ -12,6 +12,6 @@ $colors: (
 $components: (
     "header": linear-gradient(map-get($colors, lighterdark), map-get($colors, dark)),
     "sidebar": map-get($colors, light),
-    "content": map-get($colors, dark),
+    "content": map-get($colors, lighterdark),
     "footer": linear-gradient(map-get($colors, dark), map-get($colors, lighterdark))
 );

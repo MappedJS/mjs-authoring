@@ -1,0 +1,17 @@
+<h2>{{ctrl.getLocale("import-data")}}</h2>
+<div class="file-upload">
+    <span class="ion-ios-cloud-upload-outline">{{ctrl.getLocale("select-file")}}</span>
+    <input onchange="angular.element(this).scope().dataSelected(this)" type="file" accept="application/msexcel"/>
+</div>
+<ul class="worksheet" ng-model="excelService.sheets" >
+    <li ng-repeat="(name, sheet) in excelService.sheets">
+        <p>
+            {{name}}
+        </p>
+        <ul class="column" ng-model="sheet">
+            <li ng-repeat="(key, value) in sheet[0]">
+                {{value}}
+            </li>
+        </ul>
+    </li>
+</ul>

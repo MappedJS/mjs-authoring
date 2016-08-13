@@ -32,6 +32,9 @@ body {
 .header {
     @import "_header.scss";
 }
+.import-data {
+    @import "_import.scss";
+}
 .application-content {
     display: flex;
     flex-direction: row;

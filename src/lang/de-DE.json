@@ -3,11 +3,13 @@
     "settings": "Einstellungen",
     "dragAndDrop": "Klicken oder Bilder hier ablegen",
     "next": "Weiter",
+    "previous": "Zurück",
     "working": "Verarbeite",
     "ready": "Bereit",
     "error": "Fehler",
     "options": "Karten Einstellungen",
     "boundaries": "Äußere Grenzen",
+    "inner-boundaries": "Bereich von Interesse",
     "northwest": "Nordwesten",
     "southeast": "Südosten",
     "latitude": "Breitengrad",
@@ -21,5 +23,7 @@
     "maximum-zoom": "Maximalzoomstufe",
     "build": "Erstelle Karte",
     "preview": "Vorschau",
-    "processing": "Verarbeite ..."
+    "processing": "Verarbeite ...",
+    "import-data": "Daten importieren",
+    "select-file": "Excel-Datei auswählen"
 }

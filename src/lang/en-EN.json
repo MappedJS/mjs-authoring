@@ -3,11 +3,13 @@
     "settings": "Settings",
     "dragAndDrop": "Click or drop images here",
     "next": "Next",
+    "previous": "Previous",
     "working": "Working",
     "ready": "Ready",
     "error": "Error",
     "options": "Map Options",
     "boundaries": "Boundaries",
+    "inner-boundaries": "Area of Interest",
     "northwest": "Northwest",
     "southeast": "Southeast",
     "latitude": "Latitude",
@@ -21,5 +23,7 @@
     "maximum-zoom": "Maximum Zoomlevel",
     "build": "Create Map",
     "preview": "Preview",
-    "processing": "Processing ..."
+    "processing": "Processing ...",
+    "import-data": "Import data",
+    "select-file": "select excel file"
 }

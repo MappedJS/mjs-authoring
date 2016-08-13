@@ -1,0 +1,107 @@
+<ul>
+    <li>
+        <button ng-click="createLabelGroup()">Create Labelgroup</button>
+    </li>
+    <ul ng-repeat="m in marker">
+        <li data-ng-model="m">
+            <div>
+                <select ng-model="m.type" ng-change="changeType(m)" ng-options="value as key for (key, value) in markerService.types"></select>
+                <select ng-model="m.sheet" ng-options="name for name in excelService.sheetnames"></select>
+            </div>
+            <div>
+                <label>position</label>
+                <ul>
+                    <li ng-repeat="columnHeader in excelService.sheets[m.sheet][0]">
+                        <input type="checkbox"
+                            value="columnHeader"
+                            ng-checked="m.columnPosition.indexOf(columnHeader) > -1"
+                            ng-click="changePosition(m, columnHeader)"
+                          >
+                        <label>{{columnHeader}}</label>
+                    </li>
+                </ul>
+            </div>
+            <div ng-show="m.text">
+                <div>
+                    <label>name</label>
+                    <select ng-model="m.columnContent" ng-options="header for header in excelService.sheets[m.sheet][0]"></select>
+                </div>
+                <div>
+                    <label>color</label>
+                    <input type="color" ng-model="m.text.color" />
+                </div>
+                <div>
+                    <label>offset</label>
+                    <input type="number" ng-model="m.text.offset[0]" />
+                    <input type="number" ng-model="m.text.offset[1]" />
+                </div>
+                <div>
+                    <label>align</label>
+                    <select ng-model="m.text.align">
+                        <option>start</option>
+                        <option>end</option>
+                        <option selected>center</option>
+                        <option>left</option>
+                        <option>right</option>
+                    </select>
+                </div>
+                <div>
+                    <label>baseline</label>
+                    <select ng-model="m.text.baseline">
+                        <option>alphabetic</option>
+                        <option>top</option>
+                        <option selected>hanging</option>
+                        <option>middle</option>
+                        <option>ideographic</option>
+                        <option>bottom</option>
+                    </select>
+                </div>
+                <div>
+                    <label>font</label>
+                    <select ng-model="m.text.font[0]">
+                        <option selected>normal</option>
+                        <option>italic</option>
+                        <option>oblique</option>
+                    </select>
+                    <select ng-model="m.text.font[1]">
+                        <option>100</option>
+                        <option>200</option>
+                        <option>300</option>
+                        <option selected>400</option>
+                        <option>600</option>
+                        <option>700</option>
+                        <option>900</option>
+                    </select>
+                    <input type="number" ng-model="m.text.font[2]" />
+                    <input type="text" ng-model="m.text.font[3]" />
+                </div>
+            </div>
+            <div ng-show="m.icon">
+                <div>
+                    <select ng-model="m.icon.type">
+                        <option selected>image</option>
+                        <option>circle</option>
+                        <option>square</option>
+                    </select>
+                </div>
+                <div>
+                    <label>offset</label>
+                    <input type="number" ng-model="m.icon.offset[0]" />
+                    <input type="number" ng-model="m.icon.offset[1]" />
+                </div>
+                <div ng-show="m.icon.type != 'image'">
+                    <label>size</label>
+                    <input type="number" ng-model="m.icon.size" />
+                </div>
+                <div ng-show="m.icon.type != 'image'">
+                    <label>color</label>
+                    <input type="color" ng-model="m.icon.color" />
+                </div>
+                <div ng-show="m.icon.type == 'image'">
+                    <label>url</label>
+                    <select ng-model="m.columnURL" ng-options="url for url in excelService.sheets[m.sheet][0]"></select>
+                </div>
+            </div>
+        </li>
+    </ul>
+</ul>

@@ -28,8 +28,10 @@
 
             <main class="application-content">
                 <aside class="sidebar" ng-class="{ 'inactive': !hasFiles() }">
-                    <div ng-include src="'components/mapcreate.html'"></div>
+                    <div ng-show="step == 1" ng-include src="'components/mapcreate.html'"></div>
+                    <div ng-show="step >= 2 && step <= 3" class="import-data" ng-controller="DataController as dataCtrl" ng-include src="'components/importData.html'"></div>
                 </aside>
+
                 <section class="content" ng-controller="MapCreationController as mccrtl">
                     <div id="upload" ng-class="{'in': !previewIsReady, 'out': previewIsReady}" class="inner-content upload" ng-init="mccrtl.init('upload')">
                         <ul id="map-list" class="mjslist upload-images" ng-model="files">
@@ -43,13 +45,15 @@
                             </li>
                         </ul>
                     </div>
+                    <div ng-show="step == 3" class="inner-content import-data" ng-controller="MarkerController as markerCtrl" ng-include src="'components/marker.html'" ></div>
                     <webview
+                        id="previewWebview"
+                        ng-show="step == 2 || step == 4"
                         class="inner-content preview"
                         ng-class="{'in': previewIsReady, 'out': !previewIsReady}"
                         src="http://127.0.0.1:8888/index.html"
                     ></webview>
-
-                    <div ng-include src="'components/footer.html'" class="footer" ng-class="{ 'inactive': !hasFiles() }"></div>
+                    <div ng-hide="step == 2" ng-include src="'components/footer.html'" class="footer" ng-class="{ 'inactive': !hasFiles() }"></div>
                 </section>
 
                 <div class="loader" ng-class="{'loading': processing}">
