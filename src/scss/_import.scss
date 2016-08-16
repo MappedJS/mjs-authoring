@@ -3,23 +3,6 @@
         margin: 0;
     }
     .file-upload {
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        border-radius: $gutter * 3;
-        font-size: .8rem;
-        width: auto;
-        height: $gutter * 10;
-        line-height: $gutter * 10;
-        outline: 0;
-        border: 1px solid currentColor;
-        background-color: transparent;
-        padding: 0 10px;
-        color: currentColor;
-        cursor: pointer;
-        &:hover {
-            color: map-get($colors, highlight);
-        }
         span:before {
             font-size: 1.6rem;
             vertical-align: middle;

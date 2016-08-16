@@ -1,17 +1,19 @@
-<h2>{{ctrl.getLocale("import-data")}}</h2>
-<div class="file-upload">
-    <span class="ion-ios-cloud-upload-outline">{{ctrl.getLocale("select-file")}}</span>
-    <input onchange="angular.element(this).scope().dataSelected(this)" type="file" accept="application/msexcel"/>
+<div class="data-nav">
+    <div class="file-upload">
+        <span class="ion-ios-folder-outline icon-before">{{ctrl.getLocale("select-file")}}</span>
+        <input onchange="angular.element(this).scope().dataSelected(this)" type="file" accept="application/msexcel" />
+    </div>
+    <div ng-class="{'disabled': !(excelService.header.length > 0)}" ng-click="createLabelGroup(!(excelService.header.length > 0))">
+        <span class="ion-ios-plus-empty icon-before">{{ctrl.getLocale("labelgroup-new")}}</span>
+    </div>
 </div>
-<ul class="worksheet" ng-model="excelService.sheets" >
-    <li ng-repeat="(name, sheet) in excelService.sheets">
-        <p>
-            {{name}}
-        </p>
-        <ul class="column" ng-model="sheet">
-            <li ng-repeat="(key, value) in sheet[0]">
-                {{value}}
-            </li>
-        </ul>
+<ul class="group-list">
+    <li data-ng-model="m" ng-repeat="(i, m) in markerService.marker" ng-class="{'active': isSelected(m)}" ng-click="markerGroupSelected(m)">
+        <div class="group-remove ion-ios-trash-outline" ng-click="deleteMarkerGroup(m)"></div>
+        <div class="group-name">{{ctrl.getLocale("labelgroup")}} {{m.id}}</div>
+        <div class="group-selected ion-compose"></div>
     </li>
 </ul>
+<p ng-show="excelService.loadedFile">
+    {{excelService.loadedFile}}
+</p>

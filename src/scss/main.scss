@@ -1,9 +1,7 @@
 @charset "utf-8";
-
 @import "_settings.scss";
-
-html,
-body {
+body,
+html {
     position: relative;
     width: 100%;
     height: 100%;
@@ -17,8 +15,8 @@ body {
 * {
     box-sizing: border-box;
 }
-.item,
-.icon {
+.icon,
+.item {
     user-select: none;
 }
 .application {
@@ -44,6 +42,7 @@ body {
     }
     .content {
         @import "_content.scss";
+        @import "_marker.scss";
     }
 }
 .loader {
@@ -55,9 +54,9 @@ body {
     z-index: 20;
     background: rgba(0,0,0,.75);
     color: map-get($colors, light);
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     display: none;
     &.loading {
         display: flex;
@@ -76,18 +75,13 @@ body {
         margin-top: 5*$gutter;
     }
 }
-
-
+@import "_formelements.scss";
 ::-webkit-scrollbar {
-  width: 5px;
+    width: 5px;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: map-get($colors, light);
-  border-radius: 20px;
+    background: map-get($colors, lighterdark);
+    border-radius: 20px;
 }
-
-::-webkit-scrollbar-track {
-}
-
+::-webkit-scrollbar-track {}
 @import "_keyframes.scss";

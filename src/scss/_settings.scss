@@ -4,14 +4,16 @@ $colors: (
     "highlight": #14aa79,
     "lighterdark": #404342,
     "dark": #2d2d2d,
+    "greyNeutral": #ccc,
     "light": #e5e6e6,
     "lightest": #fff,
-    "darkest": #000
+    "darkest": #000,
+    "danger": #ea1c4c
 );
 
 $components: (
     "header": linear-gradient(map-get($colors, lighterdark), map-get($colors, dark)),
     "sidebar": map-get($colors, light),
     "content": map-get($colors, lighterdark),
-    "footer": linear-gradient(map-get($colors, dark), map-get($colors, lighterdark))
+    "footer": map-get($colors, dark)
 );

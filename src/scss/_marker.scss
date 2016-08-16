@@ -1,0 +1,47 @@
+& {
+    fieldset > div > label {
+        align-self: flex-start;
+    }
+    .marker-model {
+        > div {
+            padding: 3*$gutter 0;
+        }
+        label {
+            font-weight: 700;
+            label {
+                font-weight: 400;
+            }
+        }
+        .list label {
+            font-weight: 400;
+        }
+        .custom-select {
+            width: 150px;
+        }
+
+    }
+    .marker-type-sheet {
+        display: flex;
+        flex: 1 0 auto;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        > div {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            label {
+                margin-right: 3*$gutter;
+            }
+        }
+    }
+    .marker-text {
+        > div {
+            display: flex;
+            flex: 1 0 auto;
+            align-items: center;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+    }
+}

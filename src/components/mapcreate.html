@@ -1,5 +1,4 @@
 <form class="map-content form-content">
-    <h2>{{ctrl.getLocale("options")}}</h2>
     <fieldset>
         <legend>
             {{ctrl.getLocale("boundaries")}}
@@ -62,35 +61,26 @@
             <div class="slider">
                 <label>{{ctrl.getLocale("thumb-size")}}</label>
                 <div>
-                    <input type="range" ng-model="mapOpts.thumbnailSize" min="5" max="20"/>
+                    <input type="range" ng-model="mapOpts.thumbnailSize" min="5" max="20" />
                     <span>{{mapOpts.thumbnailSize}}%</span>
                 </div>
             </div>
             <div>
                 <label>{{ctrl.getLocale("tile-size")}}</label>
                 <div class="custom-select">
-                    <select class="selectTileSize"
-                        ng-model="mapOpts.tileSize"
-                        ng-options="size as size for size in tileSizes"
-                    ></select>
+                    <select class="selectTileSize" ng-model="mapOpts.tileSize" ng-options="size as size for size in tileSizes"></select>
                 </div>
             </div>
             <div>
                 <label>{{ctrl.getLocale("min-tile-size")}}</label>
                 <div class="custom-select">
-                    <select class="selectMinTileSize"
-                        ng-model="mapOpts.minTileSize"
-                        ng-options="minsize as minsize for minsize in minTileSizes"
-                    ></select>
+                    <select class="selectMinTileSize" ng-model="mapOpts.minTileSize" ng-options="minsize as minsize for minsize in minTileSizes"></select>
                 </div>
             </div>
             <div>
                 <label>{{ctrl.getLocale("file-format")}}</label>
                 <div class="custom-select">
-                    <select class="extension"
-                        ng-model="mapOpts.extension"
-                        ng-options="extension as extension for extension in extensions"
-                    ></select>
+                    <select class="extension" ng-model="mapOpts.extension" ng-options="extension as extension for extension in extensions"></select>
                 </div>
             </div>
             <div class="slider">

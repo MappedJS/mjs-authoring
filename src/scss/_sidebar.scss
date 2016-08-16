@@ -2,9 +2,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 3*$gutter;
     flex: 0 1 auto;
-    width: 320px;
+    width: 380px;
     background: map-get($components, sidebar);
     transition: all .15s ease;
     overflow-x: hidden;
@@ -16,5 +15,101 @@
     }
     .form-content {
         @import "_forms.scss";
+    }
+    .import-data {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        .data-nav {
+            flex: 0 1 auto;
+            display: flex;
+            height: 40px;
+            min-height: 40px;
+            justify-content: space-around;
+            align-items: center;
+            background: map-get($colors, lighterdark);
+            color: map-get($colors, light);
+            box-shadow: 0 0 2px 1px rgba(0,0,0,0.3);
+            position: relative;
+            > div {
+                position: relative;
+                cursor: pointer;
+                user-select: none;
+                &:hover {
+                    color: map-get($colors, highlight);
+                }
+            }
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+        }
+        li {
+            position: relative;
+            display: flex;
+            flex: 0 1 auto;
+            flex-direction: row;
+            list-style: none;
+            min-height: 80px;
+            height: 80px;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 2*$gutter;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid map-get($colors, greyNeutral);
+            .group-selected {
+                position: absolute;
+                right: -(2*$gutter);
+                height: 100%;
+                color: map-get($colors, lighterdark);
+                background-color: transparent;
+                width: 70px;
+                justify-content: center;
+                align-items: center;
+                display: flex;
+                font-size: 1.8rem;
+                transition: background-color .3s ease;
+            }
+            &:first-child {
+                margin-top: 0;
+            }
+            &.active {
+                .group-selected {
+                    color: map-get($colors, lightest);
+                    background-color: map-get($colors, highlight);
+                }
+            }
+        }
+        .group-name {
+            margin-left: 2*$gutter;
+        }
+        .group-remove {
+            flex: 0 1 auto;
+            min-width: 40px;
+            text-align: center;
+            cursor: pointer;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            margin-left: -(2*$gutter);
+            transition: background-color .3s ease;
+            &:hover {
+                color: map-get($colors, lightest);
+                background-color: map-get($colors, danger);
+            }
+            &:before {
+                font-size: 1.4rem;
+            }
+        }
+        .group-name {
+            flex: 1 1 auto;
+        }
     }
 }

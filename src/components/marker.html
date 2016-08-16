@@ -1,107 +1,128 @@
-<ul>
-    <li>
-        <button ng-click="createLabelGroup()">Create Labelgroup</button>
-    </li>
-    <ul ng-repeat="m in marker">
-        <li data-ng-model="m">
+<h2>{{ctrl.getLocale("labelgroup")}} {{markerService.selectedMarkerGroup.id}}</h2>
+<form class="marker-model" ng-model="markerService.selectedMarkerGroup">
+    <fieldset class="marker-type-sheet">
+        <legend>General</legend>
+        <div>
+            <label>{{ctrl.getLocale("type")}}</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.type" ng-change="markerService.changeType(markerService.selectedMarkerGroup, this)" ng-options="value as key for (key, value) in markerService.types"></select>
+            </div>
+        </div>
+        <div>
+            <label>{{ctrl.getLocale("sheet")}}</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.sheet" ng-options="name for name in excelService.sheetnames"></select>
+            </div>
+        </div>
+        </div>
+        <div>
+            <label>{{ctrl.getLocale("coord")}}</label>
+            <ul class="list scroll-vertical">
+                <li ng-repeat="columnHeader in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]">
+                    <input type="checkbox" value="columnHeader" ng-checked="markerService.selectedMarkerGroup.columnPosition.indexOf(columnHeader) > -1" ng-click="changePosition(markerService.selectedMarkerGroup, columnHeader)">
+                    <label>{{columnHeader}}</label>
+                </li>
+            </ul>
+    </fieldset>
+    <fieldset class="marker-text" ng-show="markerService.selectedMarkerGroup.text">
+        <legend>Text</legend>
+        <div>
+            <label>name</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.columnContent" ng-options="header for header in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+            </div>
+        </div>
+        <div>
+            <label>color</label>
+            <input type="color" ng-model="markerService.selectedMarkerGroup.text.color" />
+        </div>
+        <div>
+            <label>offset</label>
+            <input type="number" ng-model="markerService.selectedMarkerGroup.text.offset[0]" />
+            <input type="number" ng-model="markerService.selectedMarkerGroup.text.offset[1]" />
+        </div>
+        <div>
+            <label>align</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.text.align">
+                    <option>start</option>
+                    <option>end</option>
+                    <option selected>center</option>
+                    <option>left</option>
+                    <option>right</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label>baseline</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.text.baseline">
+                    <option>alphabetic</option>
+                    <option>top</option>
+                    <option selected>hanging</option>
+                    <option>middle</option>
+                    <option>ideographic</option>
+                    <option>bottom</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label>font</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.text.font[0]">
+                    <option selected>normal</option>
+                    <option>italic</option>
+                    <option>oblique</option>
+                </select>
+            </div>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.text.font[1]">
+                    <option>100</option>
+                    <option>200</option>
+                    <option>300</option>
+                    <option selected>400</option>
+                    <option>600</option>
+                    <option>700</option>
+                    <option>900</option>
+                </select>
+            </div>
+            <input type="number" ng-model="markerService.selectedMarkerGroup.text.font[2]" />
+            <input type="text" ng-model="markerService.selectedMarkerGroup.text.font[3]" />
+        </div>
+    </fieldset>
+    <fieldset class="marker-icon" ng-show="markerService.selectedMarkerGroup.icon">
+        <legend>Icon</legend>
+        <div class="custom-select">
+            <select ng-model="markerService.selectedMarkerGroup.icon.type" ng-change="markerService.changeIconType(markerService.selectedMarkerGroup)">
+                <option selected>image</option>
+                <option>circle</option>
+                <option>square</option>
+            </select>
+        </div>
+        <div class="double">
+            <label>offset</label>
             <div>
-                <select ng-model="m.type" ng-change="changeType(m)" ng-options="value as key for (key, value) in markerService.types"></select>
-                <select ng-model="m.sheet" ng-options="name for name in excelService.sheetnames"></select>
+                <label>x</label>
+                <input type="number" ng-model="markerService.selectedMarkerGroup.icon.offset[0]" />
             </div>
             <div>
-                <label>position</label>
-                <ul>
-                    <li ng-repeat="columnHeader in excelService.sheets[m.sheet][0]">
-                        <input type="checkbox"
-                            value="columnHeader"
-                            ng-checked="m.columnPosition.indexOf(columnHeader) > -1"
-                            ng-click="changePosition(m, columnHeader)"
-                          >
-                        <label>{{columnHeader}}</label>
-                    </li>
-                </ul>
+                <label>y</label>
+                <input type="number" ng-model="markerService.selectedMarkerGroup.icon.offset[1]" />
             </div>
-            <div ng-show="m.text">
-                <div>
-                    <label>name</label>
-                    <select ng-model="m.columnContent" ng-options="header for header in excelService.sheets[m.sheet][0]"></select>
-                </div>
-                <div>
-                    <label>color</label>
-                    <input type="color" ng-model="m.text.color" />
-                </div>
-                <div>
-                    <label>offset</label>
-                    <input type="number" ng-model="m.text.offset[0]" />
-                    <input type="number" ng-model="m.text.offset[1]" />
-                </div>
-                <div>
-                    <label>align</label>
-                    <select ng-model="m.text.align">
-                        <option>start</option>
-                        <option>end</option>
-                        <option selected>center</option>
-                        <option>left</option>
-                        <option>right</option>
-                    </select>
-                </div>
-                <div>
-                    <label>baseline</label>
-                    <select ng-model="m.text.baseline">
-                        <option>alphabetic</option>
-                        <option>top</option>
-                        <option selected>hanging</option>
-                        <option>middle</option>
-                        <option>ideographic</option>
-                        <option>bottom</option>
-                    </select>
-                </div>
-                <div>
-                    <label>font</label>
-                    <select ng-model="m.text.font[0]">
-                        <option selected>normal</option>
-                        <option>italic</option>
-                        <option>oblique</option>
-                    </select>
-                    <select ng-model="m.text.font[1]">
-                        <option>100</option>
-                        <option>200</option>
-                        <option>300</option>
-                        <option selected>400</option>
-                        <option>600</option>
-                        <option>700</option>
-                        <option>900</option>
-                    </select>
-                    <input type="number" ng-model="m.text.font[2]" />
-                    <input type="text" ng-model="m.text.font[3]" />
-                </div>
+        </div>
+        <div ng-show="markerService.selectedMarkerGroup.icon.type != 'image'">
+            <label>size</label>
+            <input type="number" ng-model="markerService.selectedMarkerGroup.icon.size" />
+        </div>
+        <div ng-show="markerService.selectedMarkerGroup.icon.type != 'image'">
+            <label>color</label>
+            <input type="color" ng-model="markerService.selectedMarkerGroup.icon.color" />
+        </div>
+        <div ng-show="markerService.selectedMarkerGroup.icon.type == 'image'">
+            <label>url</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.columnURL" ng-options="url for url in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
             </div>
-            <div ng-show="m.icon">
-                <div>
-                    <select ng-model="m.icon.type">
-                        <option selected>image</option>
-                        <option>circle</option>
-                        <option>square</option>
-                    </select>
-                </div>
-                <div>
-                    <label>offset</label>
-                    <input type="number" ng-model="m.icon.offset[0]" />
-                    <input type="number" ng-model="m.icon.offset[1]" />
-                </div>
-                <div ng-show="m.icon.type != 'image'">
-                    <label>size</label>
-                    <input type="number" ng-model="m.icon.size" />
-                </div>
-                <div ng-show="m.icon.type != 'image'">
-                    <label>color</label>
-                    <input type="color" ng-model="m.icon.color" />
-                </div>
-                <div ng-show="m.icon.type == 'image'">
-                    <label>url</label>
-                    <select ng-model="m.columnURL" ng-options="url for url in excelService.sheets[m.sheet][0]"></select>
-                </div>
-            </div>
-        </li>
-    </ul>
-</ul>
+        </div>
+    </fieldset>
+</form>

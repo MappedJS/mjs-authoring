@@ -1,6 +1,8 @@
 & {
     display: flex;
     flex: 0 1 auto;
+    min-height: 50px;
+    height: 50px;
     align-items: center;
     justify-content: space-between;
     padding: 3*$gutter 4*$gutter;
@@ -9,6 +11,7 @@
     transition: all .15s ease;
     background: map-get($components, footer);
     &.inactive {
+        min-height: 0;
         padding: 0;
         flex: 0 0 0;
     }
@@ -34,7 +37,7 @@
     }
     &.button {
         & > span {
-            margin-left: 2*$gutter;
+            margin: 0 2*$gutter;
         }
     }
     &.info {

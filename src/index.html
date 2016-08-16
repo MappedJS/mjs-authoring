@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
     <head lang="de">
         <title>MappedJS: Authoring Tool</title>
         <meta charset="UTF-8">
@@ -13,14 +14,12 @@
         <link rel="stylesheet" type="text/css" href="css/fonts/ionicons.min.css">
 
         <script src="js/ImageFile.js"></script>
-
         <script src="../node_modules/angular/angular.min.js"></script>
-
         <script src="../node_modules/filereader.js/filereader.js"></script>
-
         <script type="text/javascript" src="js/components.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
     </head>
+
     <body>
         <article class="application" ng-app="authoringTool" ng-controller="MainController as ctrl">
 
@@ -29,14 +28,15 @@
             <main class="application-content">
                 <aside class="sidebar" ng-class="{ 'inactive': !hasFiles() }">
                     <div ng-show="step == 1" ng-include src="'components/mapcreate.html'"></div>
-                    <div ng-show="step >= 2 && step <= 3" class="import-data" ng-controller="DataController as dataCtrl" ng-include src="'components/importData.html'"></div>
+                    <div ng-show="step == 2" class="import-data" ng-controller="DataController as dataCtrl" ng-include src="'components/importData.html'"></div>
+                    <div ng-show="step == 3" class="add-content" ng-controller="ContentController as contentCtrl" ng-include src="'components/content.html'"></div>
                 </aside>
 
                 <section class="content" ng-controller="MapCreationController as mccrtl">
                     <div id="upload" ng-class="{'in': !previewIsReady, 'out': previewIsReady}" class="inner-content upload" ng-init="mccrtl.init('upload')">
                         <ul id="map-list" class="mjslist upload-images" ng-model="files">
                             <li class="add-another-file" ng-click="mccrtl.uploadClickHandler()">
-                                <span class="icon ion-android-add"></span>
+                                <span class="icon ion-ios-plus-empty"></span>
                                 <span class="dad" ng-bind-html='ctrl.getLocale("dragAndDrop")'></span>
                                 <input type="file" multiple accept="image/*" id="input-upload" />
                             </li>
@@ -45,15 +45,9 @@
                             </li>
                         </ul>
                     </div>
-                    <div ng-show="step == 3" class="inner-content import-data" ng-controller="MarkerController as markerCtrl" ng-include src="'components/marker.html'" ></div>
-                    <webview
-                        id="previewWebview"
-                        ng-show="step == 2 || step == 4"
-                        class="inner-content preview"
-                        ng-class="{'in': previewIsReady, 'out': !previewIsReady}"
-                        src="http://127.0.0.1:8888/index.html"
-                    ></webview>
-                    <div ng-hide="step == 2" ng-include src="'components/footer.html'" class="footer" ng-class="{ 'inactive': !hasFiles() }"></div>
+                    <webview id="previewWebview" ng-show="step == 2 || step == 3" class="inner-content preview" ng-class="{'in': previewIsReady, 'out': !previewIsReady, 'blur' : markerService.selectedMarkerGroup}" src="http://127.0.0.1:8888/index.html"></webview>
+                    <div ng-show="markerService.selectedMarkerGroup && step == 2" class="inner-content import-data" ng-controller="MarkerController as markerCtrl" ng-include src="'components/marker.html'"></div>
+                    <div ng-include src="'components/footer.html'" class="footer" ng-class="{ 'inactive': !hasFiles() }"></div>
                 </section>
 
                 <div class="loader" ng-class="{'loading': processing}">
@@ -69,4 +63,5 @@
         </article>
 
     </body>
+
 </html>

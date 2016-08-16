@@ -22,8 +22,16 @@
     "minimum-zoom": "Mindestzoomstufe",
     "maximum-zoom": "Maximalzoomstufe",
     "build": "Erstelle Karte",
+    "preview-create": "Vorschau erstellen",
     "preview": "Vorschau",
     "processing": "Verarbeite ...",
     "import-data": "Daten importieren",
-    "select-file": "Excel-Datei auswählen"
+    "back": "Zurück",
+    "select-file": "Excel hochladen",
+    "sheet": "Blatt",
+    "coord": "Koordinate",
+    "type": "Typ",
+    "content-goto": "Inhalte hinterlegen",
+    "labelgroup": "Beschriftungsgruppe",
+    "labelgroup-new": "Neue Gruppe"
 }

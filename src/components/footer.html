@@ -1,31 +1,19 @@
 <div class="left">
-    <div
-        ng-show="step == 4"
-        class="item button">
-            <span class="ion-chevron-left"></span>
-            {{ctrl.getLocale("previous")}}
+    <div ng-show="step >= 2" ng-click="back()" class="item button">
+        <span class="ion-chevron-left"></span> {{ctrl.getLocale("back")}}
     </div>
 </div>
 <div class="right">
-    <div
-        ng-show="step == 1"
-        ng-class="{'disabled': !hasFiles()}"
-        ng-click="next()"
-        class="item button">
-            {{ctrl.getLocale("build")}}
-            <span class="ion-chevron-right"></span>
+    <div ng-show="step == 1" ng-class="{'disabled': !hasFiles()}" ng-click="next()" class="item button">
+        {{ctrl.getLocale("build")}}
+        <span class="ion-chevron-right"></span>
     </div>
-    <div
-        ng-show="step == 3"
-        ng-click="markersDone()"
-        class="item button">
-            {{ctrl.getLocale("next")}}
-            <span class="ion-chevron-right"></span>
+    <div ng-show="step == 2 && markerService.selectedMarkerGroup" ng-click="markersDone()" class="item button">
+        {{ctrl.getLocale("preview-create")}}
+        <span class="ion-chevron-right"></span>
     </div>
-    <div
-        ng-show="step == 4"
-        class="item button">
-            {{ctrl.getLocale("next")}}
-            <span class="ion-chevron-right"></span>
+    <div ng-show="step == 2 && !markerService.selectedMarkerGroup" ng-click="toContent()" class="item button">
+        {{ctrl.getLocale("content-goto")}}
+        <span class="ion-chevron-right"></span>
     </div>
 </div>

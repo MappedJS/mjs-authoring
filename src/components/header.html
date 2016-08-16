@@ -9,6 +9,11 @@
     <div class="spacer"></div>
     <div class="item" ng-class="{'selected': step == 2}">
         {{ctrl.getLocale("step")}} 2
+        <span>{{ctrl.getLocale("import-data")}}</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="item" ng-class="{'selected': step == 3}">
+        {{ctrl.getLocale("step")}} 3
         <span>{{ctrl.getLocale("preview")}}</span>
     </div>
 </nav>

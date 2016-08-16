@@ -1,15 +1,17 @@
 & {
+    position: relative;
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
     background: map-get($components, content);
+    overflow: hidden;
 }
 .inner-content {
     position: relative;
     display: flex;
     flex: 1 0 auto;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     color: map-get($colors, light);
     transition: color .3s ease;
     &.out {
@@ -21,11 +23,45 @@
     &.preview {
         flex-direction: column;
         align-items: stretch;
+        &.blur {
+            filter: blur(10px);
+            margin: 10px;
+        }
     }
     &.drag {
         color: map-get($colors, highlight);
         .add-another-file {
             border-color: map-get($colors, highlight);
+        }
+    }
+    &.import-data {
+        position: absolute;
+        left: 5px;
+        top: calc(50% - 25px);
+        transform: translateY(-50%);
+        width: 500px;
+        background: #efefef;
+        color: #333;
+        border-left: 10px solid map-get($colors, highlight);
+        margin-left: 5px;
+        box-shadow: 1px 1px 4px 2px rgba(0,0,0,.2);
+        flex-direction: column;
+        max-height: calc(100% - 70px);
+        > form {
+            width: 100%;
+            padding: 10px 25px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            fieldset {
+                min-width: auto;
+            }
+        }
+        > h2 {
+            color: map-get($colors, lightest);
+            background: map-get($colors, highlight);
+            width: 100%;
+            padding: 10px 15px;
+            min-height: 50px;
         }
     }
 }

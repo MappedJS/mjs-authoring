@@ -1,7 +1,9 @@
 const PythonShell = require('python-shell');
 const OS = require('os');
 const fs = require('fs-extra');
-const {shell} = require('electron');
+const {
+    shell
+} = require('electron');
 const pug = require('pug');
 const connect = require('connect');
 const serveStatic = require('serve-static');
@@ -26,24 +28,25 @@ angular.module('authoringTool', ['components'])
 
         // TODO: remove test values
         $scope.mapOpts = {
+
+            bounds: {
+                northWest: [59, -2],
+                southEast: [43, 23]
+            },
+            aoiBounds: {
+                northWest: [55.064, 5.849],
+                southEast: [47.269, 15.021]
+            },
             /*
             bounds: {
-                northWest: [52.777, 12.916],
-                southEast: [52.266, 13.938]
+                northWest: [],
+                southEast: []
             },
             aoiBounds: {
-                northWest: [52.777, 12.916],
-                southEast: [52.266, 13.938]
+                northWest: [],
+                southEast: []
             },
             */
-            bounds: {
-                northWest: [],
-                southEast: []
-            },
-            aoiBounds: {
-                northWest: [],
-                southEast: []
-            },
             thumbnailSize: 10,
             tileSize: 512,
             minTileSize: 128,
@@ -82,9 +85,21 @@ angular.module('authoringTool', ['components'])
                     }
                 });
                 fs.writeFileSync(this.tmpDir + "index.html", html);
-                $scope.step++;
                 document.getElementById("previewWebview").reload();
+                $scope.markerService.selectedMarkerGroup = undefined;
             });
+        };
+
+        $scope.back = () => {
+            if ($scope.step === 2) {
+                $scope.previewIsReady = false;
+                this.previewServer.close();
+            }
+            $scope.step--;
+        };
+
+        $scope.toContent = () => {
+            $scope.step++;
         };
 
         $scope.next = () => {
@@ -130,9 +145,10 @@ angular.module('authoringTool', ['components'])
 
                 //shell.showItemInFolder(this.tmpDir);
 
-                connect().use(serveStatic(this.tmpDir)).listen(8888, () => {
+                this.previewServer = connect().use(serveStatic(this.tmpDir)).listen(8888, () => {
                     $scope.processing = false;
                     $scope.previewIsReady = true;
+                    document.getElementById("previewWebview").reload();
                     $scope.step = 2;
                     $scope.$apply();
                 });
@@ -141,8 +157,8 @@ angular.module('authoringTool', ['components'])
         };
 
         this.getCenterOfBounds = function(b) {
-            const lat = (b.northWest[0]+b.southEast[0]) / 2;
-            const lng = (b.northWest[1]+b.southEast[1]) / 2;
+            const lat = (b.northWest[0] + b.southEast[0]) / 2;
+            const lng = (b.northWest[1] + b.southEast[1]) / 2;
             return {
                 "lat": lat,
                 "lng": lng
@@ -158,8 +174,12 @@ angular.module('authoringTool', ['components'])
         };
 
     })
-    .controller('DataController', function($scope, $timeout, excelService) {
+    .controller('ContentController', function($scope, $timeout, excelService) {
+        // TODO
+    })
+    .controller('DataController', function($scope, $timeout, excelService, markerService) {
         $scope.excelService = excelService;
+        $scope.markerService = markerService;
 
         $scope.dataSelected = function(data) {
             const currentFile = data.files[0].path;
@@ -171,26 +191,51 @@ angular.module('authoringTool', ['components'])
             $scope.excelService.sheetnames = excelFile["SheetNames"];
             for (const [i, name] of excelFile["SheetNames"].entries()) {
                 const sheet = excelFile["Sheets"][name];
-                $scope.excelService.sheets[name] = XLSX.utils.sheet_to_json(sheet, {header: 1});
+                $scope.excelService.sheets[name] = XLSX.utils.sheet_to_json(sheet, {
+                    header: 1
+                });
                 $scope.excelService.body[name] = XLSX.utils.sheet_to_json(sheet);
                 for (const [j, column] of $scope.excelService.sheets[name][0].entries()) {
                     $scope.excelService.header.push(name + ":" + column);
                 }
             }
-            $scope.$parent.step = 3;
+            //$scope.$parent.step = 3;
             $scope.$apply();
         };
 
+
+        $scope.isSelected = (m) => {
+            return $scope.markerService.selectedMarkerGroup === m;
+        };
+
+        $scope.deleteMarkerGroup = (m) => {
+            let wasSelected = false;
+            if (m === $scope.markerService.selectedMarkerGroup) {
+                wasSelected = true;
+            }
+            $scope.markerService.removeGroup(m);
+            if ($scope.markerService.marker.length === 0) {
+                $scope.markerService.selectedMarkerGroup = undefined;
+            } else {
+                if (wasSelected) {
+                    $scope.markerService.selectedMarkerGroup = $scope.markerService.marker[0];
+                }
+            }
+        };
+
+        $scope.createLabelGroup = (disabled) => {
+            if (disabled) return false;
+            $scope.markerService.selectedMarkerGroup = $scope.markerService.addGroup();
+            $scope.markerService.changeType($scope.markerService.selectedMarkerGroup);
+        };
+
+        $scope.markerGroupSelected = (m) => {
+            $scope.markerService.selectedMarkerGroup = m;
+        };
     })
     .controller('MarkerController', function($scope, $timeout, markerService, excelService) {
         $scope.markerService = markerService;
         $scope.excelService = excelService;
-
-        $scope.marker = $scope.markerService.marker;
-
-        $scope.createLabelGroup = () => {
-            $scope.markerService.addGroup();
-        };
 
         $scope.changePosition = (m, pos) => {
             const existInArray = m.columnPosition.indexOf(pos);
@@ -199,13 +244,6 @@ angular.module('authoringTool', ['components'])
             } else {
                 m.columnPosition.slice(existInArray, 1);
             }
-        };
-
-        $scope.changeType = (m) => {
-            delete m.text;
-            delete m.icon;
-            if (m.type.text) m.text = angular.copy(m.type.text);
-            if (m.type.icon) m.icon = angular.copy(m.type.icon);
         };
 
     })
@@ -270,7 +308,7 @@ angular.module('authoringTool', ['components'])
 
         this.init = function(elem) {
             $scope.upload = document.getElementById(elem);
-            $scope.uploadInput = document.getElementById("input-"+elem);
+            $scope.uploadInput = document.getElementById("input-" + elem);
             FileReaderJS.setupDrop($scope.upload, fROpts);
             FileReaderJS.setupInput($scope.uploadInput, fROpts);
             FileReaderJS.setSync(true);
@@ -279,7 +317,7 @@ angular.module('authoringTool', ['components'])
         this.uploadClickHandler = function() {
             $timeout(function() {
                 document.querySelector('#input-upload').click();
-            },0);
+            }, 0);
         };
 
         this.addFile = function(file) {
@@ -306,11 +344,12 @@ angular.module('authoringTool', ['components'])
     .service("markerService", function(excelService, imgLoaderService) {
         this.marker = [];
 
+        this.markerCount = 0;
+
         this.types = {
             "icon": {
                 icon: {
                     type: "image",
-                    size: 5,
                     offset: [0, 0],
                     url: ""
                 }
@@ -334,7 +373,6 @@ angular.module('authoringTool', ['components'])
                 },
                 icon: {
                     type: "image",
-                    size: 5,
                     offset: [0, 0],
                     url: ""
                 }
@@ -351,11 +389,26 @@ angular.module('authoringTool', ['components'])
             columnPosition: [],
             columnContent: "",
             columnURL: "",
+            id: "",
             sheet: []
         };
 
         this.addGroup = () => {
-            this.marker.push(angular.copy(this.labelTemplate));
+            const newGroup = angular.copy(this.labelTemplate);
+            this.markerCount++;
+            newGroup.id = "" + this.markerCount;
+            newGroup.type = this.types["icon"];
+            newGroup.sheet = excelService.sheetnames[0];
+            this.marker.push(newGroup);
+            return newGroup;
+        };
+
+        this.removeGroup = (m) => {
+            for (const [i, marker] of this.marker.entries()) {
+                if (marker === m) {
+                    this.marker.splice(i, 1);
+                }
+            }
         };
 
         this.getMarkerData = (dir, cb) => {
@@ -376,9 +429,13 @@ angular.module('authoringTool', ['components'])
                     producedMarkers.push(currentMarker);
                 }
             }
-            imgLoaderService.saveAllImagesLocally(this.urlsToDownload, dir, () => {
+            if (this.urlsToDownload.length === 0) {
                 cb(producedMarkers);
-            });
+            } else {
+                imgLoaderService.saveAllImagesLocally(this.urlsToDownload, dir, () => {
+                    cb(producedMarkers);
+                });
+            }
         };
 
         this.enrichText = (cm, group, entry) => {
@@ -419,12 +476,33 @@ angular.module('authoringTool', ['components'])
             return m;
         };
 
+        this.changeType = (m) => {
+            delete m.text;
+            delete m.icon;
+            if (m.type.text) m.text = angular.copy(m.type.text);
+            if (m.type.icon) m.icon = angular.copy(m.type.icon);
+        };
+
+        this.changeIconType = (m) => {
+            if (m.icon.type === "image") {
+                delete m.icon.color;
+                delete m.icon.size;
+                m.icon.url = "";
+            } else {
+                delete m.icon.url;
+                m.icon.size = 5;
+                m.icon.color = "#333333";
+            }
+        };
+
     })
     .service("imgLoaderService", function($http) {
 
         this.download = (u, i, dir, cb) => {
             let newPath = "";
-            request(u, {encoding: 'binary'}, (error, response, body) => {
+            request(u, {
+                encoding: 'binary'
+            }, (error, response, body) => {
                 let extension = "jpg";
                 if (!error && response.statusCode === 200) {
                     if (response.headers["content-type"].includes("image")) {
@@ -451,7 +529,9 @@ angular.module('authoringTool', ['components'])
                 const copyPath = path.parse(u.path);
                 if (copyPath.ext && copyPath.ext !== "") {
                     newPath = 'icon_' + i + copyPath.ext;
-                    fs.copySync(u.path, dir + newPath, {clobber: true}, (err) => {
+                    fs.copySync(u.path, dir + newPath, {
+                        clobber: true
+                    }, (err) => {
                         if (err) {
                             errorOccured = true;
                             console.error(err);
@@ -462,7 +542,7 @@ angular.module('authoringTool', ['components'])
                     console.error("No extension found!");
                 }
             }
-            (errorOccured) ? cb(u, null) : cb(null, newPath);
+            (errorOccured) ? cb(u, null): cb(null, newPath);
         };
 
         this.saveAllImagesLocally = (array, dir, cb) => {
