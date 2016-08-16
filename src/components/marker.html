@@ -17,7 +17,7 @@
         </div>
         <div>
             <label>{{ctrl.getLocale("coord")}}</label>
-            <ul class="list scroll-vertical">
+            <ul class="list">
                 <li ng-repeat="columnHeader in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]">
                     <input type="checkbox" value="columnHeader" ng-checked="markerService.selectedMarkerGroup.columnPosition.indexOf(columnHeader) > -1" ng-click="changePosition(markerService.selectedMarkerGroup, columnHeader)">
                     <label>{{columnHeader}}</label>
