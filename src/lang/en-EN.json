@@ -33,5 +33,20 @@
     "type": "Type",
     "labelgroup": "Labelgroup",
     "content-goto": "Add Content",
-    "labelgroup-new": "New Group"
+    "labelgroup-new": "New Group",
+    "general": "Generell",
+    "text": "Text",
+    "font": "Font",
+    "icon": "Icon",
+    "content": "Content",
+    "color": "Color",
+    "offsets": "Offsets",
+    "text-align": "Alignment",
+    "text-baseline": "Baseline",
+    "font-style": "Style",
+    "font-family": "Family",
+    "font-size": "Size",
+    "font-weight": "Weight",
+    "size": "Size",
+    "url": "Url"
 }

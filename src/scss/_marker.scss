@@ -1,16 +1,15 @@
 & {
-    fieldset > div > label {
-        align-self: flex-start;
-    }
     .marker-model {
         > div {
             padding: 3*$gutter 0;
         }
         label {
             font-weight: 700;
-            label {
-                font-weight: 400;
-            }
+
+        }
+        .indent label {
+            font-weight: 400;
+            margin-left: 6*$gutter;
         }
         .list label {
             font-weight: 400;
@@ -18,7 +17,9 @@
         .custom-select {
             width: 150px;
         }
-
+        .align-start {
+            align-self: flex-start;
+        }
     }
     .marker-type-sheet {
         display: flex;
@@ -35,13 +36,18 @@
             }
         }
     }
-    .marker-text {
+    .marker-text,
+    .marker-icon  {
         > div {
             display: flex;
             flex: 1 0 auto;
             align-items: center;
             flex-direction: row;
             justify-content: flex-start;
+        }
+        input[type=number],
+        input[type=text] {
+            max-width: 150px;
         }
     }
 }

@@ -33,5 +33,20 @@
     "type": "Typ",
     "content-goto": "Inhalte hinterlegen",
     "labelgroup": "Beschriftungsgruppe",
-    "labelgroup-new": "Neue Gruppe"
+    "labelgroup-new": "Neue Gruppe",
+    "general": "Generell",
+    "text": "text",
+    "icon": "Icon",
+    "content": "Inhalt",
+    "color": "Farbe",
+    "offsets": "Abstände",
+    "text-align": "Ausrichtung",
+    "text-baseline": "Grundlinie",
+    "font": "Schrift",
+    "font-style": "Stil",
+    "font-family": "Art",
+    "font-size": "Größe",
+    "font-weight": "Schnitt",
+    "size": "Größe",
+    "url": "URL"
 }
