@@ -1,29 +1,40 @@
 <form class="map-content form-content">
     <fieldset>
         <legend>
+            {{ctrl.getLocale("settings")}}
+        </legend>
+        <div>
+            <div>
+                <label>{{ctrl.getLocale("projectname")}}</label>
+                <input type="text" class="long" ng-model="mapOpts.projectname" />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>
             {{ctrl.getLocale("boundaries")}}
         </legend>
         <div>
-            <h2>{{ctrl.getLocale("northwest")}}</h2>
-            <div>
-                <label>{{ctrl.getLocale("latitude")}}</label>
-                <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.northWest[0]" />
-            </div>
-            <div>
-                <label>{{ctrl.getLocale("longitude")}}</label>
-                <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.northWest[1]" />
-            </div>
+            <label>{{ctrl.getLocale("northwest")}}</label>
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("latitude")}}</label>
+            <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.northWest[0]" />
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("longitude")}}</label>
+            <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.northWest[1]" />
         </div>
         <div>
-            <h2>{{ctrl.getLocale("southeast")}}</h2>
-            <div>
-                <label>{{ctrl.getLocale("latitude")}}</label>
-                <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.southEast[0]" />
-            </div>
-            <div>
-                <label>{{ctrl.getLocale("longitude")}}</label>
-                <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.southEast[1]" />
-            </div>
+            <label>{{ctrl.getLocale("southeast")}}</label>
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("latitude")}}</label>
+            <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.southEast[0]" />
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("longitude")}}</label>
+            <input type="number" ng-change="boundsChanged()" ng-model="mapOpts.bounds.southEast[1]" />
         </div>
     </fieldset>
     <fieldset>
@@ -31,26 +42,57 @@
             {{ctrl.getLocale("inner-boundaries")}}
         </legend>
         <div>
-            <h2>{{ctrl.getLocale("northwest")}}</h2>
-            <div>
-                <label>{{ctrl.getLocale("latitude")}}</label>
-                <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.northWest[0]" />
-            </div>
-            <div>
-                <label>{{ctrl.getLocale("longitude")}}</label>
-                <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.northWest[1]" />
-            </div>
+            <label>{{ctrl.getLocale("northwest")}}</label>
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("latitude")}}</label>
+            <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.northWest[0]" />
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("longitude")}}</label>
+            <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.northWest[1]" />
         </div>
         <div>
-            <h2>{{ctrl.getLocale("southeast")}}</h2>
-            <div>
-                <label>{{ctrl.getLocale("latitude")}}</label>
-                <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.southEast[0]" />
-            </div>
-            <div>
-                <label>{{ctrl.getLocale("longitude")}}</label>
-                <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.southEast[1]" />
-            </div>
+            <label>{{ctrl.getLocale("southeast")}}</label>
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("latitude")}}</label>
+            <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.southEast[0]" />
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("longitude")}}</label>
+            <input type="number" ng-focus="wasSelected(this)" ng-model="mapOpts.aoiBounds.southEast[1]" />
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>
+            {{ctrl.getLocale("cluster")}}
+        </legend>
+        <div class="file-upload btn">
+            <span class="ion-ios-folder-outline icon-before">{{ctrl.getLocale("url")}} <em>({{ctrl.clusterPath()}})</em></span>
+            <input onchange="angular.element(this).scope().clusterSelected(this)" type="file" accept="image/*" />
+        </div>
+        <div>
+            <label>{{ctrl.getLocale("size")}}</label>
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("width")}}</label>
+            <input type="number" ng-model="mapOpts.clusterImage.size[0]" />
+        </div>
+        <div class="indent">
+            <label>{{ctrl.getLocale("height")}}</label>
+            <input type="number" ng-model="mapOpts.clusterImage.size[1]" />
+        </div>
+        <div>
+            <label>{{ctrl.getLocale("offsets")}}</label>
+        </div>
+        <div class="indent">
+            <label>x</label>
+            <input type="number" ng-model="mapOpts.clusterImage.offset[0]" />
+        </div>
+        <div class="indent">
+            <label>y</label>
+            <input type="number" ng-model="mapOpts.clusterImage.offset[1]" />
         </div>
     </fieldset>
     <fieldset>

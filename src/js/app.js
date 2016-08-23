@@ -13,11 +13,14 @@ const url = require('url');
 const path = require('path');
 const fis = require('fast-image-size');
 
+const IMAGE_ICON_LIST = {};
+
 /*global FileReaderJS,ImageFile*/
 angular.module('authoringTool', ['components'])
-    .controller('MainController', function($scope, $sce, $timeout, languageService, dataService, markerService) {
+    .controller('MainController', function($scope, $sce, $timeout, languageService, dataService, markerService, imgLoaderService) {
 
         $scope.languageService = languageService;
+        $scope.imgLoaderService = imgLoaderService;
         $scope.markerService = markerService;
 
         $scope.dataService = dataService;
@@ -28,7 +31,7 @@ angular.module('authoringTool', ['components'])
 
         // TODO: remove test values
         $scope.mapOpts = {
-
+            projectname: "mjs-" + new Date().getMinutes(),
             bounds: {
                 northWest: [59, -2],
                 southEast: [43, 23]
@@ -36,6 +39,11 @@ angular.module('authoringTool', ['components'])
             aoiBounds: {
                 northWest: [55.064, 5.849],
                 southEast: [47.269, 15.021]
+            },
+            clusterImage: {
+                path: __dirname + "/project-template/cluster-marker.png",
+                size: [64, 128],
+                offset: [-32, -64]
             },
             /*
             bounds: {
@@ -71,18 +79,46 @@ angular.module('authoringTool', ['components'])
         };
 
         $scope.markersDone = () => {
-            $scope.markerService.getMarkerData(this.tmpDir, (markerData) => {
+            $scope.markerService.getMarkerData(this.tmpDir, (markerData, templates) => {
+                if (templates && Object.keys(templates).length > 0) {
+                    $scope.mapOpts.tooltip = {
+                        templates: {
+
+                        }
+                    };
+                    for (let template in templates) {
+                        fs.copySync(__dirname + '/../node_modules/mjs-plugin/hbs/' + template + '.hbs', this.tmpDir + '/hbs/' + template + '.hbs', {
+                            clobber: true
+                        }, (err) => {
+                            if (err) {
+                                console.error(err);
+                            }
+                        });
+                        $scope.mapOpts.tooltip.templates[template] = 'hbs/' + template + '.hbs';
+                    }
+                } else {
+                    delete $scope.mapOpts.tooltip;
+                }
+
+
                 $scope.mapOpts.markerData = {
                     "marker": markerData
                 };
-                var html = pug.renderFile(__dirname + '/project-template/index.pug', {
-                    pretty: true,
-                    options: {
+                const opts = {
+                    mapSettings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
+                        clusterImage: $scope.mapOpts.clusterImage,
                         bounds: $scope.mapOpts.bounds,
                         center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
-                        markerData: $scope.mapOpts.markerData
-                    }
+                    },
+                    markerData: $scope.mapOpts.markerData
+                };
+                if ($scope.mapOpts.tooltip) {
+                    opts.mapSettings.tooltip = $scope.mapOpts.tooltip;
+                }
+                var html = pug.renderFile(__dirname + '/project-template/index.pug', {
+                    pretty: true,
+                    options: opts
                 });
                 fs.writeFileSync(this.tmpDir + "index.html", html);
                 document.getElementById("previewWebview").reload();
@@ -92,6 +128,7 @@ angular.module('authoringTool', ['components'])
 
         $scope.back = () => {
             if ($scope.step === 2) {
+                $scope.mapOpts.clusterImage.path = __dirname + "/project-template/cluster-marker.png";
                 $scope.previewIsReady = false;
                 this.previewServer.close();
             }
@@ -102,9 +139,20 @@ angular.module('authoringTool', ['components'])
             $scope.step++;
         };
 
+        $scope.clusterSelected = function(data) {
+            const file = data.files[0].path;
+            $scope.mapOpts.clusterImage.path = file;
+            $scope.$apply();
+        };
+
+        this.clusterPath = function() {
+            const parsedPath = path.parse($scope.mapOpts.clusterImage.path);
+            return parsedPath.base;
+        };
+
         $scope.next = () => {
             $scope.processing = true;
-            this.tmpDir = OS.tmpdir() + "/MappedJS/";
+            this.tmpDir = OS.tmpdir() + "/MappedJS/" + $scope.mapOpts.projectname + "/";
             fs.ensureDirSync(this.tmpDir);
             const allPaths = $scope.dataService.getPaths();
             var pyOptions = {
@@ -129,21 +177,37 @@ angular.module('authoringTool', ['components'])
                 if (err) {
                     console.error(err);
                 }
-                var html = pug.renderFile(__dirname + '/project-template/index.pug', {
-                    pretty: true,
-                    options: {
+                const clusterimg = path.parse($scope.mapOpts.clusterImage.path);
+
+                fs.copySync(clusterimg.dir + "/" + clusterimg.base, this.tmpDir + "images/cluster" + clusterimg.ext, {
+                    clobber: true
+                }, (err) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
+
+                $scope.mapOpts.clusterImage.path = "images/cluster" + clusterimg.ext;
+
+                const opts = {
+                    mapSettings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
                         bounds: $scope.mapOpts.bounds,
-                        center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
-                        markerData: $scope.mapOpts.markerData
-                    }
+                        clusterImage: $scope.mapOpts.clusterImage,
+                        center: this.getCenterOfBounds($scope.mapOpts.aoiBounds)
+                    },
+                    markerData: $scope.mapOpts.markerData
+                };
+                var html = pug.renderFile(__dirname + '/project-template/index.pug', {
+                    pretty: true,
+                    options: opts
                 });
                 fs.writeFileSync(this.tmpDir + "index.html", html);
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/img", this.tmpDir + "img/");
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/js/mappedJS.min.js", this.tmpDir + "js/mappedjs.min.js");
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/styles/mappedJS.min.css", this.tmpDir + "styles/mappedjs.min.css");
 
-                //shell.showItemInFolder(this.tmpDir);
+                shell.showItemInFolder(this.tmpDir);
 
                 this.previewServer = connect().use(serveStatic(this.tmpDir)).listen(8888, () => {
                     $scope.processing = false;
@@ -199,7 +263,6 @@ angular.module('authoringTool', ['components'])
                     $scope.excelService.header.push(name + ":" + column);
                 }
             }
-            //$scope.$parent.step = 3;
             $scope.$apply();
         };
 
@@ -314,12 +377,6 @@ angular.module('authoringTool', ['components'])
             FileReaderJS.setSync(true);
         };
 
-        this.uploadClickHandler = function() {
-            $timeout(function() {
-                document.querySelector('#input-upload').click();
-            }, 0);
-        };
-
         this.addFile = function(file) {
             $scope.dataService.files.push(file);
             $scope.dataService.hasFiles = $scope.files.length > 0;
@@ -389,9 +446,60 @@ angular.module('authoringTool', ['components'])
             columnPosition: [],
             columnContent: "",
             columnURL: "",
+            columnIconOffset: "",
+            columnTextOffset: "",
+            columnSize: "",
             id: "",
             sheet: []
         };
+
+        this.addContent = () => {
+            if (!this.selectedMarkerGroup.content) {
+                this.selectedMarkerGroup.content = [];
+            }
+            if (!this.selectedMarkerGroup.newType) {
+                this.selectedMarkerGroup.newType = [];
+            }
+            this.selectedMarkerGroup.content.push({
+                type: "",
+                content: {}
+            });
+        };
+
+        this.contentTypes = [{
+            type: "image",
+            content: {
+                "url": "",
+                "caption": "",
+                "credit": ""
+            }
+        }, {
+            type: "text",
+            content: {
+                text: ""
+            }
+        }, {
+            type: "iframe",
+            content: {
+                url: "",
+                width: "",
+                height: "",
+                caption: "",
+                credit: ""
+            }
+        }, {
+            type: "crossheading",
+            content: {
+                text: ""
+            }
+        }, {
+            type: "headline",
+            content: {
+                kicker: "",
+                headline: "",
+                subheadline: ""
+            }
+        }];
 
         this.addGroup = () => {
             const newGroup = angular.copy(this.labelTemplate);
@@ -401,6 +509,15 @@ angular.module('authoringTool', ['components'])
             newGroup.sheet = excelService.sheetnames[0];
             this.marker.push(newGroup);
             return newGroup;
+        };
+
+        this.changeContentType = (a, i) => {
+            a.content[i] = angular.copy(a.newType[i]);
+        };
+
+        this.deleteContent = (i) => {
+            this.selectedMarkerGroup.content.splice(i, 1);
+            this.selectedMarkerGroup.newType.splice(i, 1);
         };
 
         this.removeGroup = (m) => {
@@ -424,16 +541,20 @@ angular.module('authoringTool', ['components'])
                     if (group.icon) {
                         currentMarker = this.enrichIcon(currentMarker, group, entry, dir, i);
                     }
+                    if (group.content) {
+                        currentMarker = this.enrichContent(currentMarker, group, entry);
+                    }
                     currentMarker = this.addPositionToMarker(currentMarker, group.columnPosition, entry);
 
                     producedMarkers.push(currentMarker);
                 }
             }
+
             if (this.urlsToDownload.length === 0) {
-                cb(producedMarkers);
+                cb(producedMarkers, this.usedTemplates);
             } else {
                 imgLoaderService.saveAllImagesLocally(this.urlsToDownload, dir, () => {
-                    cb(producedMarkers);
+                    cb(producedMarkers, this.usedTemplates);
                 });
             }
         };
@@ -443,6 +564,26 @@ angular.module('authoringTool', ['components'])
             cm.text.font[2] = cm.text.font[2] + "px";
             cm.text.font = cm.text.font.join(" ");
             cm.text.content = entry[group.columnContent];
+            cm.text.offset = arrayToFloats(entry[group.columnTextOffset].split(","));
+            return cm;
+        };
+
+        this.enrichContent = (cm, group, entry) => {
+            this.usedTemplates = {};
+            cm.content = [];
+            for (const item of group.content) {
+                if (!this.usedTemplates[item.type]) {
+                    this.usedTemplates[item.type] = "";
+                }
+                const currItem = {
+                    type: item.type,
+                    content: {}
+                };
+                for (let contentType in item.content) {
+                    currItem.content[contentType] = entry[item.content[contentType]];
+                }
+                cm.content.push(currItem);
+            }
             return cm;
         };
 
@@ -450,6 +591,8 @@ angular.module('authoringTool', ['components'])
             cm.icon = angular.copy(group.icon);
             if (group.columnURL && group.columnURL !== "") {
                 cm.icon.url = entry[group.columnURL];
+                cm.icon.size = arrayToFloats(entry[group.columnSize].split(","));
+                cm.icon.offset = arrayToFloats(entry[group.columnIconOffset].split(","));
                 const loadUrl = url.parse(cm.icon.url);
                 const parseFile = path.parse(cm.icon.url);
                 if (parseFile.ext && parseFile.ext !== "") {
@@ -483,14 +626,16 @@ angular.module('authoringTool', ['components'])
             if (m.type.icon) m.icon = angular.copy(m.type.icon);
         };
 
+        this.log = (m) => {
+            console.log(m);
+        };
+
         this.changeIconType = (m) => {
             if (m.icon.type === "image") {
                 delete m.icon.color;
-                delete m.icon.size;
                 m.icon.url = "";
             } else {
                 delete m.icon.url;
-                m.icon.size = 5;
                 m.icon.color = "#333333";
             }
         };
@@ -500,6 +645,9 @@ angular.module('authoringTool', ['components'])
 
         this.download = (u, i, dir, cb) => {
             let newPath = "";
+            if (typeof IMAGE_ICON_LIST[u] === "string") {
+                return cb(null, IMAGE_ICON_LIST[u]);
+            }
             request(u, {
                 encoding: 'binary'
             }, (error, response, body) => {
@@ -517,12 +665,16 @@ angular.module('authoringTool', ['components'])
                 }
                 newPath = 'icon_' + i + '.' + extension;
                 fs.writeFileSync(dir + newPath, body, 'binary', (err) => {});
+                IMAGE_ICON_LIST[u] = newPath;
                 cb(null, newPath);
             });
         };
 
         this.copyFile = (u, i, dir, cb) => {
             let newPath = "";
+            if (typeof IMAGE_ICON_LIST[u.href] === "string") {
+                return cb(null, IMAGE_ICON_LIST[u.href]);
+            }
             let errorOccured = true;
             if (u.path) {
                 errorOccured = false;
@@ -542,6 +694,7 @@ angular.module('authoringTool', ['components'])
                     console.error("No extension found!");
                 }
             }
+            IMAGE_ICON_LIST[u.href] = newPath;
             (errorOccured) ? cb(u, null): cb(null, newPath);
         };
 
@@ -557,22 +710,26 @@ angular.module('authoringTool', ['components'])
 
             for (const [i, u] of array.entries()) {
                 const downloadURL = url.parse(u.url);
+
+                if (!(downloadURL.href in IMAGE_ICON_LIST)) {
+                    IMAGE_ICON_LIST[downloadURL.href] = false;
+                } else {
+                    u.data.url = IMAGE_ICON_LIST[downloadURL.href];
+                }
+
                 if (downloadURL.protocol && downloadURL.protocol.includes("http")) {
                     this.download(downloadURL.href, i, dir, (failedUrl, newURL) => {
                         u.data.url = subdir + newURL;
-                        const size = fis(path.resolve(dir, newURL));
-                        u.data.size = [size.width, size.height];
                         this.copyCallback(failedUrl, filesToDownload, cb);
                     });
                 } else {
                     this.copyFile(downloadURL, i, dir, (failedUrl, newURL) => {
                         u.data.url = subdir + newURL;
-                        const size = fis(path.resolve(dir, newURL));
-                        u.data.size = [size.width, size.height];
                         this.copyCallback(failedUrl, filesToDownload, cb);
                     });
                 }
             }
+            console.log(IMAGE_ICON_LIST);
         };
 
         this.copyCallback = (failedUrl, filesToDownload, cb) => {
@@ -630,3 +787,9 @@ angular.module('authoringTool', ['components'])
         this.loadLanguage();
 
     });
+
+function arrayToFloats(a) {
+    return a.map(function(item) {
+        return parseFloat(item);
+    });
+}

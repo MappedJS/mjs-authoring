@@ -31,6 +31,7 @@
     "sheet": "Blatt",
     "coord": "Koordinate",
     "type": "Typ",
+    "projectname": "Projektname",
     "content-goto": "Inhalte hinterlegen",
     "labelgroup": "Beschriftungsgruppe",
     "labelgroup-new": "Neue Gruppe",
@@ -48,5 +49,8 @@
     "font-size": "Größe",
     "font-weight": "Schnitt",
     "size": "Größe",
+    "width": "Breite",
+    "height": "Höhe",
+    "cluster": "Cluster",
     "url": "URL"
 }

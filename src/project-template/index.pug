@@ -1,48 +1,33 @@
 doctype html
 html(lang="de")
-  head
-    title=project
-    link(rel="stylesheet", type="text/css", href="styles/mappedjs.min.css")
-    meta(name="viewport", content="width=device-width, user-scalable=yes")
-    style.
-        body {
-            margin: 0;
-            font-family: Verdana, sans-serif;
-        }
-        body * {
-            box-sizing: border-box;
-        }
-        body,
-        html {
-            width: 100%;
-            height: 100%;
-        }
-        .mjs {
-            width: 100%;
-            height: 100%;
-        }
-  body
-    .mjs(data-test=options.center)
-    script(type='text/javascript', src='js/mappedjs.min.js')
-    script(type='text/javascript').
-        var mappedJS = new de.MappedJS({
-            container: ".mjs",
-            mapData: "mapData.json",
-            markerData: !{JSON.stringify(options.markerData)},
-            mapSettings: {
-                "center": {
-                    "lat": #{options.center.lat},
-                    "lng": #{options.center.lng}
-                },
-                "bounds": {
-                    "northWest": [#{options.bounds.northWest}],
-                    "southEast": [#{options.bounds.southEast}]
-                },
-                "aoiBounds": {
-                    "northWest": [#{options.aoiBounds.northWest}],
-                    "southEast": [#{options.aoiBounds.southEast}]
-                },
-                "level": 0,
-                "zoom": 1
+    head
+        title=project
+        link(rel="stylesheet", type="text/css", href="styles/mappedjs.min.css")
+        meta(name="viewport", content="width=device-width, user-scalable=yes")
+        style.
+            body {
+                margin: 0;
+                font-family: Verdana, sans-serif;
             }
-        });
+            body * {
+                box-sizing: border-box;
+            }
+            body,
+            html {
+                width: 100%;
+                height: 100%;
+            }
+            .mjs {
+                width: 100%;
+                height: 100%;
+            }
+    body
+        .mjs
+        script(type='text/javascript', src='js/mappedjs.min.js')
+        script(type='text/javascript').
+            var mappedJS = new de.MappedJS({
+                container: ".mjs",
+                mapData: "mapData.json",
+                markerData: !{JSON.stringify(options.markerData)},
+                mapSettings: !{JSON.stringify(options.mapSettings)}
+            });

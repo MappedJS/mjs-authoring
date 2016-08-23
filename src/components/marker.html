@@ -14,7 +14,6 @@
                 <select ng-model="markerService.selectedMarkerGroup.sheet" ng-options="name for name in excelService.sheetnames"></select>
             </div>
         </div>
-        </div>
         <div>
             <label class="align-start">{{ctrl.getLocale("coord")}}</label>
             <ul class="list">
@@ -23,6 +22,7 @@
                     <label>{{columnHeader}}</label>
                 </li>
             </ul>
+        </div>
     </fieldset>
     <fieldset class="marker-text" ng-show="markerService.selectedMarkerGroup.text">
         <legend>{{ctrl.getLocale("text")}}</legend>
@@ -38,14 +38,9 @@
         </div>
         <div>
             <label>{{ctrl.getLocale("offsets")}}</label>
-        </div>
-        <div class="indent">
-            <label>x</label>
-            <input type="number" ng-model="markerService.selectedMarkerGroup.text.offset[0]" />
-        </div>
-        <div class="indent">
-            <label>y</label>
-            <input type="number" ng-model="markerService.selectedMarkerGroup.text.offset[1]" />
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.columnTextOffset" ng-options="offsetText for offsetText in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+            </div>
         </div>
         <div>
             <label>{{ctrl.getLocale("text")}}</label>
@@ -125,18 +120,15 @@
         </div>
         <div>
             <label>{{ctrl.getLocale("offsets")}}</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.columnIconOffset" ng-options="offsetIcon for offsetIcon in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+            </div>
         </div>
-        <div class="indent">
-            <label>x</label>
-            <input type="number" ng-model="markerService.selectedMarkerGroup.icon.offset[0]" />
-        </div>
-        <div class="indent">
-            <label>y</label>
-            <input type="number" ng-model="markerService.selectedMarkerGroup.icon.offset[1]" />
-        </div>
-        <div ng-show="markerService.selectedMarkerGroup.icon.type != 'image'">
+        <div>
             <label>{{ctrl.getLocale("size")}}</label>
-            <input type="number" ng-model="markerService.selectedMarkerGroup.icon.size" />
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.columnSize" ng-options="size for size in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+            </div>
         </div>
         <div ng-show="markerService.selectedMarkerGroup.icon.type != 'image'">
             <label>{{ctrl.getLocale("color")}}</label>
@@ -148,5 +140,27 @@
                 <select ng-model="markerService.selectedMarkerGroup.columnURL" ng-options="url for url in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
             </div>
         </div>
+    </fieldset>
+    <fieldset class="marker-content">
+        <legend>{{ctrl.getLocale("content")}}</legend>
+        <div class="btn" ng-click="markerService.addContent()">
+            Add Content
+        </div>
+        <ul>
+            <li ng-repeat="currentMarker in markerService.selectedMarkerGroup.content">
+                <div ng-click="markerService.deleteContent($index)" class="ion-close deleteImage"></div>
+
+                <div class="custom-select">
+                    <select ng-change="markerService.changeContentType(markerService.selectedMarkerGroup, $index)" ng-model="markerService.selectedMarkerGroup.newType[$index]" ng-options="option.type for option in markerService.contentTypes"></select>
+                </div>
+
+                <div ng-repeat="(k, v) in currentMarker.content track by $index">
+                    <div class="custom-select">
+                        <label ng-click="markerService.log(v)">{{k}}</label>
+                        <select ng-model="markerService.selectedMarkerGroup.content[$parent.$index].content[k]" ng-options="d for d in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </fieldset>
 </form>

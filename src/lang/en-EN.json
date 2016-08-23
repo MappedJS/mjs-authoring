@@ -41,6 +41,7 @@
     "content": "Content",
     "color": "Color",
     "offsets": "Offsets",
+    "projectname": "Projectname",
     "text-align": "Alignment",
     "text-baseline": "Baseline",
     "font-style": "Style",
@@ -48,5 +49,8 @@
     "font-size": "Size",
     "font-weight": "Weight",
     "size": "Size",
+    "width": "Width",
+    "height": "Height",
+    "cluster": "Cluster",
     "url": "Url"
 }
