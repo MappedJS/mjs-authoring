@@ -10,7 +10,7 @@
             {{file.filesize}}
         </p>
         <p>
-            {{file.width}} x {{file.height}} | ratio ({{file.ratio[0].toFixed(2)}}:{{file.ratio[1].toFixed(2)}})
+            {{file.width}} x {{file.height}} | {{ctrl.getLocale("ratio")}} ({{file.ratio[0].toFixed(2)}}:{{file.ratio[1].toFixed(2)}})
         </p>
     </div>
     <div ng-click="delete($index)" class="ion-close deleteImage"></div>

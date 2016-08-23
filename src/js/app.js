@@ -12,7 +12,7 @@ const request = require('request');
 const url = require('url');
 const path = require('path');
 const fis = require('fast-image-size');
-
+const archiver = require('archiver');
 const IMAGE_ICON_LIST = {};
 
 /*global FileReaderJS,ImageFile*/
@@ -100,7 +100,6 @@ angular.module('authoringTool', ['components'])
                     delete $scope.mapOpts.tooltip;
                 }
 
-
                 $scope.mapOpts.markerData = {
                     "marker": markerData
                 };
@@ -111,6 +110,7 @@ angular.module('authoringTool', ['components'])
                         bounds: $scope.mapOpts.bounds,
                         center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
                     },
+                    mapData: $scope.mapOpts.mapData,
                     markerData: $scope.mapOpts.markerData
                 };
                 if ($scope.mapOpts.tooltip) {
@@ -137,6 +137,24 @@ angular.module('authoringTool', ['components'])
 
         $scope.toContent = () => {
             $scope.step++;
+        };
+
+        $scope.export = () => {
+            const srcDirectory = this.tmpDir;
+            const outputPath = "/Users/mduve/Desktop/h/";
+            fs.ensureDirSync(outputPath);
+            const output = fs.createWriteStream(outputPath + "export.zip");
+            const zipArchive = archiver('zip');
+            output.on('close', function() {
+                shell.showItemInFolder(outputPath);
+            });
+            zipArchive.pipe(output);
+            zipArchive.bulk([{
+                src: ['**/*'],
+                cwd: srcDirectory,
+                expand: true
+            }]);
+            zipArchive.finalize();
         };
 
         $scope.clusterSelected = function(data) {
@@ -179,7 +197,7 @@ angular.module('authoringTool', ['components'])
                 }
                 const clusterimg = path.parse($scope.mapOpts.clusterImage.path);
 
-                fs.copySync(clusterimg.dir + "/" + clusterimg.base, this.tmpDir + "images/cluster" + clusterimg.ext, {
+                fs.copySync(clusterimg.dir + "/" + clusterimg.base, this.tmpDir + "img/cluster" + clusterimg.ext, {
                     clobber: true
                 }, (err) => {
                     if (err) {
@@ -187,15 +205,21 @@ angular.module('authoringTool', ['components'])
                     }
                 });
 
-                $scope.mapOpts.clusterImage.path = "images/cluster" + clusterimg.ext;
+                const data = fs.readFileSync(this.tmpDir + "mapData.json", {
+                    encoding: "utf-8"
+                });
+                fs.unlinkSync(this.tmpDir + "mapData.json");
+                $scope.mapOpts.mapData = JSON.parse(data);
+                $scope.mapOpts.clusterImage.path = "img/cluster" + clusterimg.ext;
 
                 const opts = {
                     mapSettings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
                         bounds: $scope.mapOpts.bounds,
                         clusterImage: $scope.mapOpts.clusterImage,
-                        center: this.getCenterOfBounds($scope.mapOpts.aoiBounds)
+                        center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
                     },
+                    mapData: $scope.mapOpts.mapData,
                     markerData: $scope.mapOpts.markerData
                 };
                 var html = pug.renderFile(__dirname + '/project-template/index.pug', {
@@ -204,10 +228,10 @@ angular.module('authoringTool', ['components'])
                 });
                 fs.writeFileSync(this.tmpDir + "index.html", html);
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/img", this.tmpDir + "img/");
-                fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/js/mappedJS.min.js", this.tmpDir + "js/mappedjs.min.js");
-                fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/styles/mappedJS.min.css", this.tmpDir + "styles/mappedjs.min.css");
+                fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/js/mappedJS.min.js", this.tmpDir + "mjs/js/mappedjs.min.js");
+                fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/styles/mappedJS.min.css", this.tmpDir + "mjs/styles/mappedjs.min.css");
 
-                shell.showItemInFolder(this.tmpDir);
+                //shell.showItemInFolder(this.tmpDir);
 
                 this.previewServer = connect().use(serveStatic(this.tmpDir)).listen(8888, () => {
                     $scope.processing = false;
@@ -376,6 +400,13 @@ angular.module('authoringTool', ['components'])
             FileReaderJS.setupInput($scope.uploadInput, fROpts);
             FileReaderJS.setSync(true);
         };
+
+        this.uploadClickHandler = function() {
+            $timeout(function() {
+                document.querySelector('#input-upload').click();
+            }, 0);
+        };
+
 
         this.addFile = function(file) {
             $scope.dataService.files.push(file);
@@ -589,10 +620,10 @@ angular.module('authoringTool', ['components'])
 
         this.enrichIcon = (cm, group, entry, dir, i) => {
             cm.icon = angular.copy(group.icon);
+            cm.icon.size = arrayToFloats(entry[group.columnSize].split(","));
+            cm.icon.offset = arrayToFloats(entry[group.columnIconOffset].split(","));
             if (group.columnURL && group.columnURL !== "") {
                 cm.icon.url = entry[group.columnURL];
-                cm.icon.size = arrayToFloats(entry[group.columnSize].split(","));
-                cm.icon.offset = arrayToFloats(entry[group.columnIconOffset].split(","));
                 const loadUrl = url.parse(cm.icon.url);
                 const parseFile = path.parse(cm.icon.url);
                 if (parseFile.ext && parseFile.ext !== "") {
@@ -624,10 +655,6 @@ angular.module('authoringTool', ['components'])
             delete m.icon;
             if (m.type.text) m.text = angular.copy(m.type.text);
             if (m.type.icon) m.icon = angular.copy(m.type.icon);
-        };
-
-        this.log = (m) => {
-            console.log(m);
         };
 
         this.changeIconType = (m) => {
@@ -701,7 +728,7 @@ angular.module('authoringTool', ['components'])
         this.saveAllImagesLocally = (array, dir, cb) => {
 
             this.failedUrls = [];
-            const subdir = "images/";
+            const subdir = "img/";
             dir = dir + subdir;
             fs.ensureDirSync(dir);
 
@@ -729,7 +756,6 @@ angular.module('authoringTool', ['components'])
                     });
                 }
             }
-            console.log(IMAGE_ICON_LIST);
         };
 
         this.copyCallback = (failedUrl, filesToDownload, cb) => {

@@ -2,7 +2,7 @@ doctype html
 html(lang="de")
     head
         title=project
-        link(rel="stylesheet", type="text/css", href="styles/mappedjs.min.css")
+        link(rel="stylesheet", type="text/css", href="mjs/styles/mappedjs.min.css")
         meta(name="viewport", content="width=device-width, user-scalable=yes")
         style.
             body {
@@ -23,11 +23,11 @@ html(lang="de")
             }
     body
         .mjs
-        script(type='text/javascript', src='js/mappedjs.min.js')
+        script(type='text/javascript', src='mjs/js/mappedjs.min.js')
         script(type='text/javascript').
             var mappedJS = new de.MappedJS({
                 container: ".mjs",
-                mapData: "mapData.json",
+                mapData: !{JSON.stringify(options.mapData)},
                 markerData: !{JSON.stringify(options.markerData)},
                 mapSettings: !{JSON.stringify(options.mapSettings)}
             });

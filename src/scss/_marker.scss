@@ -45,4 +45,80 @@
             max-width: 150px;
         }
     }
+    .content-type-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            flex: 1 0 auto;
+            background: map-get($colors, lightest);
+            border: 1px solid map-get($colors, greyNeutral);
+            margin: 3*$gutter 0;
+        }
+        .mc-remove {
+            display: flex;
+            flex: 0 1 auto;
+            align-items: center;
+            padding: 0 ($gutter*5);
+            transition: background-color .3s ease;
+            cursor: pointer;
+            &:hover {
+                color: map-get($colors, lightest);
+                background-color: map-get($colors, danger);
+            }
+            div:before {
+                font-size: 1.4rem;
+            }
+        }
+        .mc-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            padding: 2*$gutter;
+            .custom-select {
+                display: flex;
+                flex-direction: row;
+                flex: 1 1 auto;
+                justify-content: space-between;
+                color: currentColor;
+                width: 100%;
+                label {
+                    flex: 1 1 auto;
+                    display: flex;
+                    align-items: center;
+                }
+                select {
+                    width: 150px;
+                }
+            }
+        }
+        .mc-content-body {
+            border-top: 1px solid map-get($colors, greyNeutral);
+            padding: 0 2*$gutter;
+            padding-top: $gutter;
+            margin-top: $gutter;
+            > div {
+                display: flex;
+                flex-direction: column;
+                margin: 4*$gutter 0;
+            }
+            .custom-select {
+                color: map-get($colors, greyNeutral);
+                label {
+                    color: map-get($colors, lighterdark);
+                    font-weight: 400;
+                }
+            }
+        }
+        .mc-content-head {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            align-content: space-between;
+            padding: 4*$gutter 2*$gutter;
+        }
+    }
 }

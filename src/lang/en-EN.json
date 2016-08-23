@@ -52,5 +52,8 @@
     "width": "Width",
     "height": "Height",
     "cluster": "Cluster",
-    "url": "Url"
+    "url": "Url",
+    "export": "Export",
+    "ratio": "Aspect ratio",
+    "add-content": "Add Content"
 }

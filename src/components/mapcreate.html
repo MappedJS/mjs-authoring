@@ -68,10 +68,14 @@
         <legend>
             {{ctrl.getLocale("cluster")}}
         </legend>
-        <div class="file-upload btn">
-            <span class="ion-ios-folder-outline icon-before">{{ctrl.getLocale("url")}} <em>({{ctrl.clusterPath()}})</em></span>
-            <input onchange="angular.element(this).scope().clusterSelected(this)" type="file" accept="image/*" />
+        <div class="cluster-path">
+            <label>{{ctrl.getLocale("url")}}</label>
+            <div class="file-upload btn">
+                <span class="ion-ios-folder-outline icon-before">{{ctrl.clusterPath()}}</span>
+                <input onchange="angular.element(this).scope().clusterSelected(this)" type="file" accept="image/*" />
+            </div>
         </div>
+
         <div>
             <label>{{ctrl.getLocale("size")}}</label>
         </div>

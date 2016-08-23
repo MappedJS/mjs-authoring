@@ -118,10 +118,10 @@
                 </select>
             </div>
         </div>
-        <div>
-            <label>{{ctrl.getLocale("offsets")}}</label>
+        <div ng-show="markerService.selectedMarkerGroup.icon.type == 'image'">
+            <label>{{ctrl.getLocale("url")}}</label>
             <div class="custom-select">
-                <select ng-model="markerService.selectedMarkerGroup.columnIconOffset" ng-options="offsetIcon for offsetIcon in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+                <select ng-model="markerService.selectedMarkerGroup.columnURL" ng-options="url for url in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
             </div>
         </div>
         <div>
@@ -130,34 +130,41 @@
                 <select ng-model="markerService.selectedMarkerGroup.columnSize" ng-options="size for size in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
             </div>
         </div>
+        <div>
+            <label>{{ctrl.getLocale("offsets")}}</label>
+            <div class="custom-select">
+                <select ng-model="markerService.selectedMarkerGroup.columnIconOffset" ng-options="offsetIcon for offsetIcon in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+            </div>
+        </div>
         <div ng-show="markerService.selectedMarkerGroup.icon.type != 'image'">
             <label>{{ctrl.getLocale("color")}}</label>
             <input type="color" ng-model="markerService.selectedMarkerGroup.icon.color" />
-        </div>
-        <div ng-show="markerService.selectedMarkerGroup.icon.type == 'image'">
-            <label>{{ctrl.getLocale("url")}}</label>
-            <div class="custom-select">
-                <select ng-model="markerService.selectedMarkerGroup.columnURL" ng-options="url for url in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
-            </div>
         </div>
     </fieldset>
     <fieldset class="marker-content">
         <legend>{{ctrl.getLocale("content")}}</legend>
         <div class="btn" ng-click="markerService.addContent()">
-            Add Content
+            <span class="ion-android-add icon"></span> {{ctrl.getLocale("add-content")}}
         </div>
-        <ul>
+        <ul class="content-type-list">
             <li ng-repeat="currentMarker in markerService.selectedMarkerGroup.content">
-                <div ng-click="markerService.deleteContent($index)" class="ion-close deleteImage"></div>
-
-                <div class="custom-select">
-                    <select ng-change="markerService.changeContentType(markerService.selectedMarkerGroup, $index)" ng-model="markerService.selectedMarkerGroup.newType[$index]" ng-options="option.type for option in markerService.contentTypes"></select>
+                <div class="mc-remove">
+                    <div ng-click="markerService.deleteContent($index)" class="ion-ios-trash-outline deleteImage"></div>
                 </div>
-
-                <div ng-repeat="(k, v) in currentMarker.content track by $index">
-                    <div class="custom-select">
-                        <label ng-click="markerService.log(v)">{{k}}</label>
-                        <select ng-model="markerService.selectedMarkerGroup.content[$parent.$index].content[k]" ng-options="d for d in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+                <div class="mc-content">
+                    <div class="mc-content-head">
+                        <div class="custom-select">
+                            <label>{{ctrl.getLocale("type")}}: </label>
+                            <select ng-change="markerService.changeContentType(markerService.selectedMarkerGroup, $index)" ng-model="markerService.selectedMarkerGroup.newType[$index]" ng-options="option.type for option in markerService.contentTypes"></select>
+                        </div>
+                    </div>
+                    <div class="mc-content-body" ng-show="markerService.selectedMarkerGroup.content[$index].type">
+                        <div ng-repeat="(k, v) in currentMarker.content track by $index">
+                            <div class="custom-select">
+                                <label>{{k}}</label>
+                                <select ng-model="markerService.selectedMarkerGroup.content[$parent.$index].content[k]" ng-options="d for d in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </li>
