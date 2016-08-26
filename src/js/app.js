@@ -139,11 +139,34 @@ angular.module('authoringTool', ['components'])
             $scope.step++;
         };
 
-        $scope.export = () => {
+        $scope.exportHandler = function() {
+            $timeout(function() {
+                document.querySelector('#export-path').click();
+            }, 0);
+        };
+
+        $scope.export = (dir) => {
             const srcDirectory = this.tmpDir;
-            const outputPath = "/Users/mduve/Desktop/h/";
+            const outputPath = dir.files[0].path + "/";
             fs.ensureDirSync(outputPath);
-            const output = fs.createWriteStream(outputPath + "export.zip");
+
+            const opts = {
+                mapSettings: {
+                    aoiBounds: $scope.mapOpts.aoiBounds,
+                    clusterImage: $scope.mapOpts.clusterImage,
+                    bounds: $scope.mapOpts.bounds,
+                    center: this.getCenterOfBounds($scope.mapOpts.aoiBounds)
+                },
+                mapData: $scope.mapOpts.mapData,
+                markerData: $scope.mapOpts.markerData
+            };
+            if ($scope.mapOpts.tooltip) {
+                opts.mapSettings.tooltip = $scope.mapOpts.tooltip;
+            }
+
+            fs.writeFileSync(srcDirectory + "data.json", JSON.stringify(opts));
+
+            const output = fs.createWriteStream(outputPath + ($scope.mapOpts.projectname || "export") + ".zip");
             const zipArchive = archiver('zip');
             output.on('close', function() {
                 shell.showItemInFolder(outputPath);
@@ -156,6 +179,8 @@ angular.module('authoringTool', ['components'])
             }]);
             zipArchive.finalize();
         };
+
+
 
         $scope.clusterSelected = function(data) {
             const file = data.files[0].path;
@@ -406,7 +431,6 @@ angular.module('authoringTool', ['components'])
                 document.querySelector('#input-upload').click();
             }, 0);
         };
-
 
         this.addFile = function(file) {
             $scope.dataService.files.push(file);
