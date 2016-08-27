@@ -130,7 +130,7 @@
                 <select ng-model="markerService.selectedMarkerGroup.columnSize" ng-options="size for size in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>
             </div>
         </div>
-        <div>
+        <div ng-show="markerService.selectedMarkerGroup.icon.type == 'image'">
             <label>{{ctrl.getLocale("offsets")}}</label>
             <div class="custom-select">
                 <select ng-model="markerService.selectedMarkerGroup.columnIconOffset" ng-options="offsetIcon for offsetIcon in excelService.sheets[markerService.selectedMarkerGroup.sheet][0]"></select>

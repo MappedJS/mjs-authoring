@@ -647,9 +647,9 @@ angular.module('authoringTool', ['components'])
         this.enrichIcon = (cm, group, entry, dir, i) => {
             cm.icon = angular.copy(group.icon);
             cm.icon.size = arrayToFloats(entry[group.columnSize].split(","));
-            cm.icon.offset = arrayToFloats(entry[group.columnIconOffset].split(","));
             if (group.columnURL && group.columnURL !== "") {
                 cm.icon.url = entry[group.columnURL];
+                cm.icon.offset = arrayToFloats(entry[group.columnIconOffset].split(","));
                 const loadUrl = url.parse(cm.icon.url);
                 const parseFile = path.parse(cm.icon.url);
                 if (parseFile.ext && parseFile.ext !== "") {
