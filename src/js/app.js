@@ -32,6 +32,7 @@ angular.module('authoringTool', ['components'])
         // TODO: remove test values
         $scope.mapOpts = {
             projectname: "mjs-" + new Date().getMinutes(),
+            /*
             bounds: {
                 northWest: [59, -2],
                 southEast: [43, 23]
@@ -40,12 +41,13 @@ angular.module('authoringTool', ['components'])
                 northWest: [55.064, 5.849],
                 southEast: [47.269, 15.021]
             },
+            */
             clusterImage: {
                 path: __dirname + "/project-template/cluster-marker.png",
                 size: [64, 128],
                 offset: [-32, -64]
             },
-            /*
+
             bounds: {
                 northWest: [],
                 southEast: []
@@ -54,7 +56,7 @@ angular.module('authoringTool', ['components'])
                 northWest: [],
                 southEast: []
             },
-            */
+
             thumbnailSize: 10,
             tileSize: 512,
             minTileSize: 128,
