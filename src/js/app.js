@@ -44,8 +44,13 @@ angular.module('authoringTool', ['components'])
             */
             clusterImage: {
                 path: __dirname + "/project-template/cluster-marker.png",
-                size: [64, 128],
-                offset: [-32, -64]
+                size: [64, 64],
+                offset: [-32, -32],
+                text: {
+                    offset: [0, -11],
+                    color: "#333",
+                    font: "bold 10px sans-serif"
+                }
             },
 
             bounds: {

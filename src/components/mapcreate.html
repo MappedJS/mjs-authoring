@@ -98,6 +98,29 @@
             <label>y</label>
             <input type="number" ng-model="mapOpts.clusterImage.offset[1]" />
         </div>
+        <div>
+            <label>{{ctrl.getLocale("text-offsets")}}</label>
+        </div>
+        <div class="indent">
+            <label>x</label>
+            <input type="number" ng-model="mapOpts.clusterImage.text.offset[0]" />
+        </div>
+        <div class="indent">
+            <label>y</label>
+            <input type="number" ng-model="mapOpts.clusterImage.text.offset[1]" />
+        </div>
+        <div>
+            <div>
+                <label>{{ctrl.getLocale("color")}}</label>
+                <input type="color" ng-model="mapOpts.clusterImage.text.color" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>{{ctrl.getLocale("font")}}</label>
+                <input type="text" class="long" ng-model="mapOpts.clusterImage.text.font" />
+            </div>
+        </div>
     </fieldset>
     <fieldset>
         <legend>

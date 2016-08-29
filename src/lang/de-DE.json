@@ -55,5 +55,6 @@
     "url": "URL",
     "ratio": "Seitenverhältnis",
     "export": "Exportieren",
-    "add-content": "Content Hinzufügen"
+    "add-content": "Content Hinzufügen",
+    "text-offsets": "Text Abstände"
 }

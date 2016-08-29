@@ -55,5 +55,6 @@
     "url": "Url",
     "export": "Export",
     "ratio": "Aspect ratio",
-    "add-content": "Add Content"
+    "add-content": "Add Content",
+    "text-offsets": "Text Offsets"
 }
