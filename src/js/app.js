@@ -107,15 +107,14 @@ angular.module('authoringTool', ['components'])
                     delete $scope.mapOpts.tooltip;
                 }
 
-                $scope.mapOpts.markerData = {
-                    "marker": markerData
-                };
+                $scope.mapOpts.markerData = markerData;
                 const opts = {
                     mapSettings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
                         clusterImage: $scope.mapOpts.clusterImage,
                         bounds: $scope.mapOpts.bounds,
                         center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
+                        container: ".mjs"
                     },
                     mapData: $scope.mapOpts.mapData,
                     markerData: $scope.mapOpts.markerData
@@ -162,7 +161,8 @@ angular.module('authoringTool', ['components'])
                     aoiBounds: $scope.mapOpts.aoiBounds,
                     clusterImage: $scope.mapOpts.clusterImage,
                     bounds: $scope.mapOpts.bounds,
-                    center: this.getCenterOfBounds($scope.mapOpts.aoiBounds)
+                    center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
+                    container: ".mjs"
                 },
                 mapData: $scope.mapOpts.mapData,
                 markerData: $scope.mapOpts.markerData
@@ -250,6 +250,7 @@ angular.module('authoringTool', ['components'])
                         bounds: $scope.mapOpts.bounds,
                         clusterImage: $scope.mapOpts.clusterImage,
                         center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
+                        container: ".mjs"
                     },
                     mapData: $scope.mapOpts.mapData,
                     markerData: $scope.mapOpts.markerData
