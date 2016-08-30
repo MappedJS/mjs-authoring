@@ -36,8 +36,8 @@
     "labelgroup": "Beschriftungsgruppe",
     "labelgroup-new": "Neue Gruppe",
     "general": "Generell",
-    "text": "text",
-    "icon": "Icon",
+    "text": "Beschriftung",
+    "icon": "Symbol",
     "content": "Inhalt",
     "color": "Farbe",
     "offsets": "Abstände",
@@ -56,5 +56,6 @@
     "ratio": "Seitenverhältnis",
     "export": "Exportieren",
     "add-content": "Content Hinzufügen",
-    "text-offsets": "Text Abstände"
+    "text-offsets": "Abstände",
+    "position": "Position"
 }

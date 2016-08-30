@@ -35,7 +35,7 @@
     "content-goto": "Add Content",
     "labelgroup-new": "New Group",
     "general": "Generell",
-    "text": "Text",
+    "text": "Label",
     "font": "Font",
     "icon": "Icon",
     "content": "Content",
@@ -56,5 +56,6 @@
     "export": "Export",
     "ratio": "Aspect ratio",
     "add-content": "Add Content",
-    "text-offsets": "Text Offsets"
+    "text-offsets": "Offsets",
+    "position": "Position"
 }
