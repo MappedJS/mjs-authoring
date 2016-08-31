@@ -264,7 +264,7 @@ angular.module('authoringTool', ['components'])
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/js/mappedJS.min.js", this.tmpDir + "mjs/js/mappedjs.min.js");
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/styles/mappedJS.min.css", this.tmpDir + "mjs/styles/mappedjs.min.css");
 
-                shell.showItemInFolder(this.tmpDir);
+                //shell.showItemInFolder(this.tmpDir);
 
                 this.previewServer = connect().use(serveStatic(this.tmpDir)).listen(8888, () => {
                     $scope.processing = false;
