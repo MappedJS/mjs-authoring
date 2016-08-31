@@ -88,7 +88,7 @@ angular.module('authoringTool', ['components'])
         $scope.markersDone = () => {
             $scope.markerService.getMarkerData(this.tmpDir, (markerData, templates) => {
                 if (templates && Object.keys(templates).length > 0) {
-                    $scope.mapOpts.tooltip = {
+                    $scope.mapOpts.sidebar = {
                         templates: {
 
                         }
@@ -101,26 +101,26 @@ angular.module('authoringTool', ['components'])
                                 console.error(err);
                             }
                         });
-                        $scope.mapOpts.tooltip.templates[template] = 'hbs/' + template + '.hbs';
+                        $scope.mapOpts.sidebar.templates[template] = 'hbs/' + template + '.hbs';
                     }
                 } else {
-                    delete $scope.mapOpts.tooltip;
+                    delete $scope.mapOpts.sidebar;
                 }
 
                 $scope.mapOpts.markerData = markerData;
                 const opts = {
-                    mapSettings: {
+                    settings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
                         clusterImage: $scope.mapOpts.clusterImage,
                         bounds: $scope.mapOpts.bounds,
                         center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
                         container: ".mjs"
                     },
-                    mapData: $scope.mapOpts.mapData,
+                    tilesData: $scope.mapOpts.tilesData,
                     markerData: $scope.mapOpts.markerData
                 };
-                if ($scope.mapOpts.tooltip) {
-                    opts.mapSettings.tooltip = $scope.mapOpts.tooltip;
+                if ($scope.mapOpts.sidebar) {
+                    opts.settings.sidebar = $scope.mapOpts.sidebar;
                 }
                 var html = pug.renderFile(__dirname + '/project-template/index.pug', {
                     pretty: true,
@@ -157,18 +157,18 @@ angular.module('authoringTool', ['components'])
             fs.ensureDirSync(outputPath);
 
             const opts = {
-                mapSettings: {
+                settings: {
                     aoiBounds: $scope.mapOpts.aoiBounds,
                     clusterImage: $scope.mapOpts.clusterImage,
                     bounds: $scope.mapOpts.bounds,
                     center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
                     container: ".mjs"
                 },
-                mapData: $scope.mapOpts.mapData,
+                tilesData: $scope.mapOpts.tilesData,
                 markerData: $scope.mapOpts.markerData
             };
-            if ($scope.mapOpts.tooltip) {
-                opts.mapSettings.tooltip = $scope.mapOpts.tooltip;
+            if ($scope.mapOpts.sidebar) {
+                opts.settings.sidebar = $scope.mapOpts.sidebar;
             }
 
             fs.writeFileSync(srcDirectory + "data.json", JSON.stringify(opts));
@@ -237,22 +237,22 @@ angular.module('authoringTool', ['components'])
                     }
                 });
 
-                const data = fs.readFileSync(this.tmpDir + "mapData.json", {
+                const data = fs.readFileSync(this.tmpDir + "tilesData.json", {
                     encoding: "utf-8"
                 });
-                fs.unlinkSync(this.tmpDir + "mapData.json");
-                $scope.mapOpts.mapData = JSON.parse(data);
+                fs.unlinkSync(this.tmpDir + "tilesData.json");
+                $scope.mapOpts.tilesData = JSON.parse(data);
                 $scope.mapOpts.clusterImage.path = "img/cluster" + clusterimg.ext;
 
                 const opts = {
-                    mapSettings: {
+                    settings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
                         bounds: $scope.mapOpts.bounds,
                         clusterImage: $scope.mapOpts.clusterImage,
                         center: this.getCenterOfBounds($scope.mapOpts.aoiBounds),
                         container: ".mjs"
                     },
-                    mapData: $scope.mapOpts.mapData,
+                    tilesData: $scope.mapOpts.tilesData,
                     markerData: $scope.mapOpts.markerData
                 };
                 var html = pug.renderFile(__dirname + '/project-template/index.pug', {
@@ -264,7 +264,7 @@ angular.module('authoringTool', ['components'])
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/js/mappedJS.min.js", this.tmpDir + "mjs/js/mappedjs.min.js");
                 fs.copySync(__dirname + "/../node_modules/mjs-plugin/dist/styles/mappedJS.min.css", this.tmpDir + "mjs/styles/mappedjs.min.css");
 
-                //shell.showItemInFolder(this.tmpDir);
+                shell.showItemInFolder(this.tmpDir);
 
                 this.previewServer = connect().use(serveStatic(this.tmpDir)).listen(8888, () => {
                     $scope.processing = false;
