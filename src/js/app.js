@@ -52,7 +52,6 @@ angular.module('authoringTool', ['components'])
                     font: "bold 10px sans-serif"
                 }
             },
-
             bounds: {
                 northWest: [],
                 southEast: []
@@ -61,7 +60,6 @@ angular.module('authoringTool', ['components'])
                 northWest: [],
                 southEast: []
             },
-
             thumbnailSize: 10,
             tileSize: 512,
             minTileSize: 128,
@@ -540,6 +538,12 @@ angular.module('authoringTool', ['components'])
             type: "text",
             content: {
                 text: ""
+            }
+        }, {
+            type: "list",
+            content: {
+                text: "",
+                name: ""
             }
         }, {
             type: "iframe",
