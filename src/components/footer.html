@@ -15,6 +15,6 @@
     <div ng-show="step == 2 && !markerService.selectedMarkerGroup" ng-click="exportHandler()" class="item button">
         {{ctrl.getLocale("export")}}
         <span class="ion-chevron-right"></span>
-        <input ng-hide="true" onchange="angular.element(this).scope().export(this)" id="export-path" type="file" webkitdirectory directory />
+        <input ng-hide="true" onclick="angular.element(this).scope().clear(this)" onchange="angular.element(this).scope().export(this)" id="export-path" type="file" webkitdirectory directory />
     </div>
 </div>

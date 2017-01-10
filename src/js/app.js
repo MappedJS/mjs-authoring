@@ -169,6 +169,10 @@ angular.module('authoringTool', ['components'])
             }, 0);
         };
 
+        $scope.clear = (item) => {
+            item.value = null;
+        };
+
         $scope.export = (dir) => {
             const srcDirectory = this.tmpDir;
             const outputPath = dir.files[0].path + "/";
@@ -198,8 +202,9 @@ angular.module('authoringTool', ['components'])
                 {"markerExportData": $scope.markerService.marker},
                 {"excelExportData": $scope.excelService.xlsPath}
             );
+            const exPath = $scope.dataService.files[0].path.substring(0, $scope.dataService.files[0].path.lastIndexOf("/") + 1);
 
-            fs.writeFileSync(srcDirectory + "project.json", JSON.stringify(exportSettings, null, "\t"));
+            fs.writeFileSync(exPath + "project.json", JSON.stringify(exportSettings));
 
             const output = fs.createWriteStream(outputPath + ($scope.mapOpts.projectname || "export") + ".zip");
             const zipArchive = archiver('zip');
@@ -347,7 +352,6 @@ angular.module('authoringTool', ['components'])
 
         $scope.dataSelected = function(data) {
             const currentFile = data.files[0].path;
-            console.log(currentFile, "hrheqrh");
             $scope.excelService.loadExcel(currentFile);
             $scope.$apply();
         };
