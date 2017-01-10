@@ -40,7 +40,7 @@
                                 <span class="dad" ng-bind-html='ctrl.getLocale("dragAndDrop")'></span>
                                 <input type="file" multiple accept="image/*" id="input-upload" />
                             </li>
-                            <li ng-repeat="file in files" ng-class="{'animation': !file.isLoaded}">
+                            <li ng-repeat="file in dataService.files" ng-class="{'animation': !file.isLoaded}">
                                 <mjslistitem data-ng-model="file"></mjslistitem>
                             </li>
                         </ul>

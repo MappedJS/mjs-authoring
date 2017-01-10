@@ -22,6 +22,12 @@
         <div class="item ion-ios-settings icon"></div>
         <div class="item ion-ios-help-outline icon"></div>
     -->
+    <div class="item">
+        <div class="load-project btn">
+            <span class="ion-ios-folder-outline icon-before">{{ctrl.getLocale("load-project")}}</span>
+            <input onchange="angular.element(this).scope().projectLoaded(this)" type="file" accept="application/json" />
+        </div>
+    </div>
     <div class="item language">
         <mjslanguage></mjslanguage>
     </div>

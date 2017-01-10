@@ -42,7 +42,9 @@
   },
   "dependencies": {
     "angular": "1.5.7",
+    "archiver": "1.0.1",
     "connect": "3.4.1",
+    "electron-context-menu": "0.8.0",
     "fast-image-size": "0.1.2",
     "fs-extra": "0.30.0",
     "minimist": "1.2.0",
@@ -50,9 +52,8 @@
     "mjs-plugin": "https://github.com/MappedJS/mjs-plugin.git",
     "pug": "2.0.0-beta3",
     "python-shell": "0.4.0",
-    "serve-static": "1.11.1",
     "request": "2.74.0",
-    "archiver": "1.0.1",
+    "serve-static": "1.11.1",
     "xlsx": "0.8.0"
   },
   "devDependencies": {

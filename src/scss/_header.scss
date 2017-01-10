@@ -1,11 +1,11 @@
 & {
-    min-height: 60px;
-    height: 60px;
-    border-bottom: 1px solid map-get($colors, darkest);
-    border-top: 1px solid map-get($colors, darkest);
     display: flex;
-    justify-content: space-between;
+    height: 60px;
+    min-height: 60px;
+    border-top: 1px solid map-get($colors, darkest);
+    border-bottom: 1px solid map-get($colors, darkest);
     background: map-get($components, header);
+    justify-content: space-between;
 }
 .nav {
     display: flex;
@@ -18,35 +18,39 @@
     }
 }
 .item {
+    font-size: 1.2rem;
     position: relative;
     padding: 5*$gutter;
-    font-size: 1.2rem;
     cursor: pointer;
-    color: map-get($colors, lightest);
     text-align: center;
+    color: map-get($colors, lightest);
     &:not(.spacer).selected,
     &:not(.spacer):hover {
         color: map-get($colors, highlight);
     }
     &.icon {
-        padding: 0;
         font-size: 2rem;
+        padding: 0;
         & + .icon {
             margin-left: 5 * $gutter;
         }
     }
+    .btn {
+        line-height: 10 * $gutter;
+        height: 10 * $gutter;
+    }
     span {
-        font-size: 0.75rem;
+        font-size: .75rem;
         display: block;
-        text-align: center
+        text-align: center;
     }
 }
 .spacer:before {
-    font-family: "Ionicons";
-    padding: 5 * $gutter;
+    font-family: 'Ionicons';
     font-size: 1rem;
+    padding: 5 * $gutter;
+    content: '\f125';
     color: map-get($colors, light);
-    content: "\f125";
 }
 .brand {
     padding: 0 (5*$gutter) 0 0;
@@ -61,30 +65,61 @@
         color: map-get($colors, highlight);
     }
     .selectLanguage {
-        appearance: none;
-        border-radius: 0;
         font-size: .8rem;
+        line-height: 30px;
         width: 100%;
         height: 30px;
-        line-height: 30px;
-        outline: 0;
-        border: 1px solid currentColor;
-        background-color: transparent;
         padding: 0 25px 0 10px;
-        color: currentColor;
         cursor: pointer;
+        color: currentColor;
+        border: 1px solid currentColor;
+        border-radius: 0;
+        outline: 0;
+        background-color: transparent;
+        appearance: none;
         &:focus {
             outline: 0;
         }
     }
     &:after {
-        content: "\f3d0";
-        font-family: "Ionicons";
-        pointer-events: none;
+        font-family: 'Ionicons';
+        line-height: 32px;
         position: absolute;
         top: 15px;
         right: 25px;
-        line-height: 32px;
+        content: '\f3d0';
+        pointer-events: none;
         color: currentColor;
+    }
+}
+.load-project {
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    span {
+        cursor: pointer;
+        &:before {
+            font-size: 1.6rem;
+            vertical-align: middle;
+            line-height: $gutter * 10;
+            margin-right: 3 * $gutter;
+        }
+        & > em {
+            font-size: .6rem;
+            font-style: italic;
+            color: map-get($colors, greyNeutral);
+        }
+    }
+    input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        filter: alpha(opacity=0);
     }
 }

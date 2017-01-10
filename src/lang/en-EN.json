@@ -57,5 +57,6 @@
     "ratio": "Aspect ratio",
     "add-content": "Add Content",
     "text-offsets": "Offsets",
-    "position": "Position"
+    "position": "Position",
+    "load-project": "Load project"
 }

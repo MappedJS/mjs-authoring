@@ -1,7 +1,7 @@
 <div class="data-nav">
     <div class="file-upload">
         <span class="ion-ios-folder-outline icon-before">{{ctrl.getLocale("select-file")}}</span>
-        <input onchange="angular.element(this).scope().dataSelected(this)" type="file" accept="application/msexcel" />
+        <input onclick="angular.element(this).scope().clearData(this)" onchange="angular.element(this).scope().dataSelected(this)" type="file" accept="application/msexcel" />
     </div>
     <div ng-class="{'disabled': !(excelService.header.length > 0)}" ng-click="createLabelGroup(!(excelService.header.length > 0))">
         <span class="ion-ios-plus-empty icon-before">{{ctrl.getLocale("labelgroup-new")}}</span>
