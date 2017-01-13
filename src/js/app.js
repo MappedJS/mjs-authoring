@@ -32,26 +32,27 @@ angular.module('authoringTool', ['components'])
 
         $scope.previewIsReady = false;
 
-        // TODO: remove test values
+        $scope.selectedClusterImg = __dirname + "/project-template/cluster-marker.png";
+
         $scope.mapOpts = {
             projectname: "mjs-" + new Date().getMinutes(),
             clusterImage: {
-                path: __dirname + "/project-template/cluster-marker.png",
-                size: [64, 64],
-                offset: [-32, -32],
+                path: "img/cluster.png",
+                size: [88, 66],
+                offset: [-38, -65],
                 text: {
-                    offset: [0, -11],
-                    color: "#333",
-                    font: "bold 10px sans-serif"
+                    offset: [-5, -8],
+                    color: "#000",
+                    font: "bold 16px Tahoma"
                 }
             },
             bounds: {
-                northWest: [90, -180],
-                southEast: [-90, 180]
+               northWest: [59, -3],
+               southEast: [43, 24]
             },
             aoiBounds: {
-                northWest: [90, -180],
-                southEast: [-90, 180]
+               northWest: [55.064, 5.849],
+               southEast: [47.269, 15.021]
             },
             thumbnailSize: 10,
             tileSize: 512,
@@ -98,6 +99,8 @@ angular.module('authoringTool', ['components'])
                 $scope.markerService.marker = content.markerExportData;
                 $scope.excelService.loadExcel(content.excelExportData);
 
+                $scope.selectedClusterImg = content.selectedClusterImg;
+
                 $scope.projectWasLoaded = true;
 
                 $scope.$apply();
@@ -125,6 +128,7 @@ angular.module('authoringTool', ['components'])
                 }
 
                 $scope.mapOpts.markerData = markerData;
+
                 const opts = {
                     settings: {
                         aoiBounds: $scope.mapOpts.aoiBounds,
@@ -152,7 +156,6 @@ angular.module('authoringTool', ['components'])
 
         $scope.back = () => {
             if ($scope.step === 2) {
-                $scope.mapOpts.clusterImage.path = __dirname + "/project-template/cluster-marker.png";
                 $scope.previewIsReady = false;
                 this.previewServer.close();
             }
@@ -197,6 +200,7 @@ angular.module('authoringTool', ['components'])
 
             const exportSettings = Object.assign(
                 {},
+                {"selectedClusterImg": $scope.selectedClusterImg},
                 $scope.mapOpts,
                 {"imagefiles": $scope.dataService.files},
                 {"markerExportData": $scope.markerService.marker},
@@ -220,17 +224,16 @@ angular.module('authoringTool', ['components'])
             zipArchive.finalize();
         };
 
-
+        this.clusterPath = function() {
+            const parsedPath = path.parse($scope.selectedClusterImg);
+            return parsedPath.base;
+        };
 
         $scope.clusterSelected = function(data) {
             const file = data.files[0].path;
-            $scope.mapOpts.clusterImage.path = file;
+            $scope.selectedClusterImg = file;
+            $scope.mapOpts.clusterImage.path = "img/cluster" + path.parse($scope.selectedClusterImg).ext;
             $scope.$apply();
-        };
-
-        this.clusterPath = function() {
-            const parsedPath = path.parse($scope.mapOpts.clusterImage.path);
-            return parsedPath.base;
         };
 
         $scope.next = () => {
@@ -261,15 +264,10 @@ angular.module('authoringTool', ['components'])
                     console.error(err);
                 }
 
-                if ($scope.mapOpts.clusterImage.path === "img/cluster.png") {
-                    $scope.mapOpts.clusterImage.path = __dirname + "/project-template/cluster-marker.png";
-                }
+                const clusterimg = path.parse($scope.selectedClusterImg);
+                const clusterimgPathTo = this.tmpDir + "img/cluster" + clusterimg.ext;
 
-                const clusterimg = path.parse($scope.mapOpts.clusterImage.path);
-                const clusterimgPathDest = clusterimg.dir + "/" + clusterimg.base;
-                const clusterimgPathSrc = this.tmpDir + "img/cluster" + clusterimg.ext;
-
-                fs.copySync(clusterimgPathDest, clusterimgPathSrc, {
+                fs.copySync($scope.selectedClusterImg, clusterimgPathTo, {
                     clobber: true
                 }, (err) => {
                     if (err) {
@@ -282,7 +280,6 @@ angular.module('authoringTool', ['components'])
                 });
                 fs.unlinkSync(this.tmpDir + "tilesData.json");
                 $scope.mapOpts.tilesData = JSON.parse(data);
-                $scope.mapOpts.clusterImage.path = "img/cluster" + clusterimg.ext;
 
                 const opts = {
                     settings: {
@@ -338,9 +335,6 @@ angular.module('authoringTool', ['components'])
             return $sce.trustAsHtml($scope.languageService.getWord(word));
         };
 
-    })
-    .controller('ContentController', function($scope, $timeout, excelService) {
-        // TODO
     })
     .controller('DataController', function($scope, $timeout, excelService, markerService) {
         $scope.excelService = excelService;
@@ -423,13 +417,13 @@ angular.module('authoringTool', ['components'])
                     }
                 },
                 error: function(e, file) {
-                    // TODO: Catch
+                    console.error(e);
                 },
                 abort: function(e, file) {
-                    // TODO: Catch
+                    console.error(e);
                 },
                 skip: function(e, file) {
-                    // TODO: Catch
+                    console.error(e);
                 },
                 groupend: function(group) {
                     $timeout(function() {

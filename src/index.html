@@ -29,7 +29,6 @@
                 <aside class="sidebar" ng-class="{ 'inactive': !hasFiles() }">
                     <div ng-show="step == 1" ng-include src="'components/mapcreate.html'"></div>
                     <div ng-show="step == 2" class="import-data" ng-controller="DataController as dataCtrl" ng-include src="'components/importData.html'"></div>
-                    <div ng-show="step == 3" class="add-content" ng-controller="ContentController as contentCtrl" ng-include src="'components/content.html'"></div>
                 </aside>
 
                 <section class="content" ng-controller="MapCreationController as mccrtl">
