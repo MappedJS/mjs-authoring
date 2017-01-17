@@ -96,7 +96,12 @@ angular.module('authoringTool', ['components'])
                 }
                 $scope.dataService.files = content.imagefiles;
 
-                $scope.markerService.marker = content.markerExportData;
+                $scope.markerService.contentTypes = content.mServiceData.contentTypes;
+                $scope.markerService.iconTypes = content.mServiceData.iconTypes;
+                $scope.markerService.labelTemplate = content.mServiceData.labelTemplate;
+                $scope.markerService.markerCount = content.mServiceData.markerCount;
+                $scope.markerService.marker = content.mServiceData.marker;
+
                 $scope.excelService.loadExcel(content.excelExportData);
 
                 $scope.selectedClusterImg = content.selectedClusterImg;
@@ -202,13 +207,22 @@ angular.module('authoringTool', ['components'])
                 {},
                 {"selectedClusterImg": $scope.selectedClusterImg},
                 $scope.mapOpts,
+                {
+                    "mServiceData": {
+                        "contentTypes": $scope.markerService.contentTypes,
+                        "markerCount": $scope.markerService.markerCount,
+                        "iconTypes": $scope.markerService.iconTypes,
+                        "labelTemplate": $scope.markerService.labelTemplate,
+                        "marker": $scope.markerService.marker
+                    }
+                },
                 {"imagefiles": $scope.dataService.files},
-                {"markerExportData": $scope.markerService.marker},
                 {"excelExportData": $scope.excelService.xlsPath}
             );
+            //console.log(this.filterAngular(exportSettings));
             const exPath = $scope.dataService.files[0].path.substring(0, $scope.dataService.files[0].path.lastIndexOf("/") + 1);
 
-            fs.writeFileSync(exPath + "project.json", JSON.stringify(exportSettings));
+            fs.writeFileSync(exPath + "project.json", JSON.stringify(exportSettings, null, "\t"));
 
             const output = fs.createWriteStream(outputPath + ($scope.mapOpts.projectname || "export") + ".zip");
             const zipArchive = archiver('zip');

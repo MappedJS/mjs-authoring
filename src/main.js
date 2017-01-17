@@ -30,8 +30,14 @@ const menuItems = [
             }, {
                 type: 'separator'
             }, {
+                label: 'Close',
+                accelerator: 'CmdOrCtrl+W',
+                click: () => {
+                    app.quit();
+                }
+            }, {
                 label: 'Quit',
-                accelerator: 'Command+Q',
+                accelerator: 'CmdOrCtrl+Q',
                 click: () => {
                     app.quit();
                 }
